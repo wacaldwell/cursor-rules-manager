@@ -1,0 +1,55 @@
+# Cursor Rules - Scripts Development Additional Template
+# Additional rules specific to scripts development environment
+# These rules are concatenated with base-global.cursorrules during deployment
+
+# =============================================================================
+# SCRIPTS DEVELOPMENT-SPECIFIC ADDITIONAL RULES
+# =============================================================================
+
+## DEVELOPMENT ENVIRONMENT FLEXIBILITY
+- **EXPERIMENTAL FEATURES**: Allows experimental features and rapid prototyping
+- **RELAXED CONSTRAINTS**: More flexible requirements for new, unproven scripts
+- **ITERATIVE DEVELOPMENT**: Support for iterative development and testing approaches
+
+## SCRIPT LIFECYCLE MANAGEMENT
+- **DEFAULT LOCATION**: All new scripts should be created in scripts/ directory by default
+- **DEVELOPMENT PHASE**: Scripts in this directory are considered under development
+- **TESTING ENVIRONMENT**: Use this environment for testing and validation before production promotion
+
+## SCRIPT ORGANIZATION POLICY - DEVELOPMENT
+- **Development Scripts (scripts directory)**:
+  - New, unproven, or experimental scripts
+  - Specialized tools not used in daily operations
+  - Scripts under development or testing
+  - One-off or rarely used utilities
+  - Scripts that haven't reached production-ready status
+
+## PROMOTION PROCESS TO PRODUCTION
+- Scripts can be promoted from scripts/ to aws-cli-jobox/ only after:
+  1. Thorough testing and validation
+  2. Proven reliability and usefulness
+  3. Proper documentation and error handling
+  4. Regular use in operational workflows
+
+## DEVELOPMENT STANDARDS
+- **MINIMUM VIABLE PRODUCT**: Focus on functionality first, optimization later
+- **DOCUMENTATION**: Basic documentation required, comprehensive docs for promotion
+- **ERROR HANDLING**: Basic error handling required, comprehensive for promotion
+- **TESTING**: Informal testing acceptable, formal testing required for promotion
+
+## EXPERIMENTAL FEATURES
+- **PROTOTYPE DEVELOPMENT**: Rapid prototyping is encouraged
+- **PROOF OF CONCEPT**: Scripts can be proof-of-concept implementations
+- **LEARNING AND EXPLORATION**: Environment supports learning new technologies and approaches
+
+## GIT REPOSITORY POLICIES
+- **SCRIPTS DIRECTORY NOT TRACKED**: The scripts/ directory is not tracked by git by design
+- **LOCAL DEVELOPMENT**: Scripts remain local until promoted to production
+- **VERSION CONTROL**: Scripts promoted to production must be properly version controlled
+
+## DEVELOPMENT WORKFLOW
+- **CREATE**: New scripts default to scripts/ directory
+- **ITERATE**: Develop and test in scripts/ environment
+- **VALIDATE**: Ensure scripts meet promotion criteria
+- **PROMOTE**: Move to aws-cli-jobox/ when production-ready
+- **MAINTAIN**: Continue maintenance in production environment

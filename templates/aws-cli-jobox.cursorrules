@@ -1,0 +1,32 @@
+# Cursor Rules - AWS CLI Jobox Production Additional Template
+# Additional rules specific to aws-cli-jobox production environment
+# These rules are concatenated with base-global.cursorrules during deployment
+
+# =============================================================================
+# AWS CLI JOBOX PRODUCTION-SPECIFIC ADDITIONAL RULES
+# =============================================================================
+
+## PRODUCTION SCRIPT REQUIREMENTS - CRITICAL
+- **QUALITY GATES**: Only thoroughly tested, stable, and frequently used scripts
+- **OPERATIONAL READINESS**: Scripts that are part of core operational workflows
+- **COMPREHENSIVE ERROR HANDLING**: Must have production-grade error handling and logging
+- **DOCUMENTATION STANDARDS**: Must be documented and maintained to production standards
+
+## AWS OPERATIONS - PRODUCTION STANDARDS
+- **AWS Profile**: When using AWS CLI, use the AWS profile 'mikmak' for SSO authentication
+- **AWS Regions**: All certificates are stored in the AWS us-east-1 region
+- **Error Handling**: AWS operations must include comprehensive error handling and retry logic
+- **Logging**: All AWS operations must be logged with request IDs and timestamps
+- **Rate Limiting**: Implement appropriate rate limiting for AWS API calls
+
+## DEPLOYMENT AND RELEASE STANDARDS
+- **Testing Requirements**: All production scripts must be tested on non-production systems first
+- **Rollback Procedures**: Include rollback procedures for any deployments
+- **Change Management**: Document all changes in appropriate changelogs
+- **Impact Assessment**: Assess impact of changes on existing workflows
+
+## MONITORING AND ALERTING
+- **Execution Monitoring**: Production scripts should have monitoring for successful execution
+- **Error Alerting**: Critical failures should trigger appropriate alerts
+- **Performance Tracking**: Track execution times and resource usage for optimization
+- **Audit Trails**: Maintain comprehensive audit trails for all production script executions
