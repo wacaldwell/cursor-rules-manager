@@ -1,0 +1,113 @@
+# Cursor Rules - Cursor Rule Manager Project
+# This project manages the DevOps rules system itself
+
+## AI ASSISTANT BEHAVIOR REQUIREMENTS - CRITICAL
+- **MANDATORY PLANNING APPROVAL**: Before executing any commands, file changes, or automation:
+  1. Present a concrete plan with specific steps
+  2. Explain potential impacts and risks
+  3. Wait for explicit user approval before proceeding
+  4. No assumptions - always ask for clarification when uncertain
+
+## MCP SERVER REQUIREMENTS - CRITICAL
+- **AWS Operations**: When creating plans involving AWS, consult AWS MCP servers for guidance on:
+  - Cost effectiveness and optimization recommendations
+  - Security best practices and compliance requirements
+  - Service selection and configuration best practices
+  - This includes guidance for: EC2, S3, IAM, CloudFormation, Route53, and all other AWS services
+- **Terraform Operations**: When creating infrastructure plans, consult HashiCorp's Terraform MCP servers for guidance on:
+  - Cost effectiveness and resource optimization
+  - Security configurations and best practices
+  - Infrastructure design patterns and recommendations
+  - This applies to all infrastructure-as-code planning and implementation
+
+## PROJECT-SPECIFIC REQUIREMENTS
+- **Documentation**: All changes must include documentation updates
+- **Testing**: Test all scripts on non-production systems first
+- **Version Control**: Use semantic versioning for releases
+- **Backward Compatibility**: Maintain compatibility with existing deployments
+
+## LOGGING REQUIREMENTS - CRITICAL
+- ALL scripts must log to: /Users/alexcaldwell/the-warehouse/logs/cursor-rules-manager/
+- Directory structure: /Users/alexcaldwell/the-warehouse/logs/cursor-rules-manager/cursor-rules-manager.log
+- Log file naming convention: `cursor-rule-manager.log` (single continuous log file)
+- Use log rotation to manage file size (logrotate or similar)
+- Include log levels: INFO, WARN, ERROR, DEBUG
+- Log both successful operations and errors
+- Always include timestamps in log entries
+- Append to existing log file - do NOT create new files for each run
+
+## GENERAL CODING PRINCIPLES
+- Follow DRY (Don't Repeat Yourself) principles
+- Use KISS (Keep It Simple, Stupid) approach
+- Implement single responsibility for functions/scripts
+- Always include proper error handling and logging
+- Never commit secrets, API keys, or passwords to version control
+
+## SECURITY REQUIREMENTS
+- Never hardcode credentials in source code
+- Use environment variables or secure secret management
+- Implement least privilege access principles
+- For AWS: Use IAM roles instead of access keys when possible
+- Enable proper audit logging
+- Use MFA for all administrative accounts
+
+## SHELL SCRIPT REQUIREMENTS
+- Always use proper shebang: #!/bin/bash or #!/bin/zsh
+- Set error handling: set -euo pipefail
+- Use local variables in functions: local var_name
+- Quote all variables: "$variable"
+- Use [[ for conditionals instead of [
+- Include header comment with purpose, usage, and dependencies
+
+## PYTHON REQUIREMENTS
+- Follow PEP 8 style guidelines strictly
+- Always use virtual environments for development
+- Include requirements.txt with pinned versions
+- Use type hints for function parameters and return values
+- Include docstrings for all functions and classes
+- Use async/await instead of callbacks where applicable
+
+## DOCUMENTATION REQUIREMENTS
+- Every script must have a header comment explaining:
+  - Purpose and functionality
+  - Usage instructions
+  - Dependencies and requirements
+  - Example usage
+- Complex functions must include inline comments
+- All projects must have comprehensive README.md
+- Document all environment variables and configuration options
+
+## TESTING REQUIREMENTS
+- Include tests for all critical functionality
+- Use meaningful test names that describe the scenario
+- Test both positive and negative cases
+- Test scripts in non-production environments first
+- Validate all automation before deploying to production
+
+## ERROR HANDLING STANDARDS
+- Always include comprehensive error handling
+- Provide meaningful error messages
+- Log errors with sufficient context for debugging
+- Include rollback procedures for deployments
+- Implement graceful failure modes
+
+## MAINTENANCE STANDARDS
+- Update dependencies regularly
+- Review and clean up unused code
+- Update documentation with any changes
+- Review and rotate credentials periodically
+- Audit access permissions regularly
+
+## PROJECT STRUCTURE REQUIREMENTS
+When making changes to this project:
+- README.md: Keep up to date with current functionality
+- docs/: All documentation must be current and accurate
+- scripts/: All scripts must be executable and tested
+- templates/: Templates must be valid and up to date
+
+## VERSION CONTROL STANDARDS
+- Use descriptive commit messages
+- Create feature branches for all changes
+- Include issue references in commit messages when applicable
+- Tag all releases with semantic versioning
+- Maintain CHANGELOG.md with all notable changes
