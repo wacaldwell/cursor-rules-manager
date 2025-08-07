@@ -6,7 +6,7 @@ set -euo pipefail
 
 # Configuration
 WAREHOUSE_ROOT="/Users/alexcaldwell/the-warehouse"
-CURSOR_RULES_DIR="$WAREHOUSE_ROOT/aws-cli-jobox/cursor-rules-manager"
+CURSOR_RULES_DIR="$WAREHOUSE_ROOT/scripts/cursor-rules-manager"
 TARGET_DIR="$WAREHOUSE_ROOT/aws-cli-jobox"
 LOG_FILE="$WAREHOUSE_ROOT/logs/cursor-rules-manager/deploy-rules.log"
 
