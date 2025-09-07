@@ -9,13 +9,16 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURSOR_RULES_DIR="$(dirname "$SCRIPT_DIR")"
 SMART_DEPLOY_SCRIPT="$CURSOR_RULES_DIR/tools/smart-deploy-rules.sh"
-LOG_FILE="/Users/alexcaldwell/the-warehouse/logs/cursor-rules-manager/deploy-rules.log"
+LOG_FILE="${LOG_DIR}/cursor-rule-manager/deploy-rules.log"
 
 # Ensure log directory exists
 mkdir -p "$(dirname "$LOG_FILE")"
 
 # 🔥 GLOBAL EXECUTION TRACKING - Enhanced logging with global tracking!
-source "/Users/alexcaldwell/the-warehouse/logs/global-execution-tracker/lib/global-logging.sh"
+if [[ -n "${GLOBAL_LOGGER:-}" && -f "$GLOBAL_LOGGER" ]]; then
+    # shellcheck disable=SC1090
+    source "$GLOBAL_LOGGER" || true
+fi
 
 # Logging functions
 log() {
@@ -163,9 +166,9 @@ deploy_smart() {
     if [[ "$dry_run" == "true" ]]; then
         log_info "🔍 DRY RUN MODE - No changes will be made"
         log_info "This would deploy cursor rules to:"
-        log_info "  📁 /Users/alexcaldwell/the-warehouse/.cursorrules (global)"
-        log_info "  📁 /Users/alexcaldwell/the-warehouse/aws-cli-jobox/.cursorrules (production)"
-        log_info "  📁 /Users/alexcaldwell/the-warehouse/scripts/.cursorrules (development)"
+        log_info "  📁 $WORK_DIR/.cursorrules (global)"
+        log_info "  📁 $WORK_DIR/projects/.cursorrules (projects)"
+        log_info "  📁 $WORK_DIR/scripts/.cursorrules (development)"
         log_success "✨ Dry run completed - use without --dry-run to deploy"
         return 0
     fi

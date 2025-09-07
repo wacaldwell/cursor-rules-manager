@@ -9,13 +9,16 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURSOR_RULES_DIR="$(dirname "$SCRIPT_DIR")"
 CONFIG_FILE="$CURSOR_RULES_DIR/config/deployment.conf"
-LOG_FILE="/Users/alexcaldwell/the-warehouse/logs/cursor-rules-manager/smart-deploy-rules.log"
+LOG_FILE="${LOG_DIR}/cursor-rules-manager/smart-deploy-rules.log"
 
 # Ensure log directory exists
 mkdir -p "$(dirname "$LOG_FILE")"
 
 # 🔥 GLOBAL EXECUTION TRACKING - Enhanced logging with global tracking!
-source "/Users/alexcaldwell/the-warehouse/logs/global-execution-tracker/lib/global-logging.sh"
+if [[ -n "${GLOBAL_LOGGER:-}" && -f "$GLOBAL_LOGGER" ]]; then
+    # shellcheck disable=SC1090
+    source "$GLOBAL_LOGGER" || true
+fi
 
 # Logging functions
 log() {
