@@ -21,9 +21,9 @@
   - This applies to all infrastructure-as-code planning and implementation
 
 ## LOGGING REQUIREMENTS - CRITICAL
-- ALL scripts must log to: /Users/alexcaldwell/the-warehouse/logs/
-- Use appropriate subdirectories for different script categories
-- Log file naming convention: `script-name.log` 
+- ALL scripts must log to: $LOG_DIR/ (resolved from environment configuration)
+- Use appropriate subdirectories for different script categories: $LOG_DIR/[script-name]/
+- Log file naming convention: `script-name.log` (single continuous log file per script)
 - Use log rotation to manage file size (logrotate or similar)
 - Include log levels: INFO, WARN, ERROR, DEBUG
 - Log both successful operations and errors
@@ -31,18 +31,16 @@
 - Append to existing log file - do NOT create new files for each run
 
 ## GLOBAL EXECUTION TRACKING - CRITICAL
-- ALL scripts must integrate with global execution tracker
-- Add this line after defining LOG_FILE: `source "/Users/alexcaldwell/the-warehouse/logs/global-execution-tracker/lib/global-logging.sh"`
+- ALL scripts must integrate with global execution tracker if available
+- Source GLOBAL_LOGGER environment variable if set: `source "$GLOBAL_LOGGER" || true`
 - This provides centralized tracking of all script executions across the workspace
 
 ## SCRIPT ORGANIZATION POLICY - CRITICAL
 - **PRIMARY DIRECTORIES**:
-  - `/Users/alexcaldwell/the-warehouse/aws-cli-jobox/` - PRODUCTION-READY scripts only
-  - `/Users/alexcaldwell/the-warehouse/scripts/` - Development, experimental, and specialized scripts
+  - `$WORK_DIR/projects/` - Structured development projects and applications
+  - `$WORK_DIR/scripts/` - Development, experimental, and utility scripts
 
-- **DEFAULT LOCATION**: All new scripts should be created in `/Users/alexcaldwell/the-warehouse/scripts/` by default
-- **PROMOTION PROCESS**: Scripts can be promoted from scripts/ to aws-cli-jobox/ only after:
-  1. Thorough testing and validation
-  2. Proven reliability and usefulness
-  3. Proper documentation and error handling
-  4. Regular use in operational workflows
+- **DEFAULT LOCATION**: All new scripts should be created in `$WORK_DIR/scripts/` by default
+- **ORGANIZATION PRINCIPLE**: 
+  - Projects directory for structured, multi-file applications
+  - Scripts directory for utilities, automation, and experimental code
