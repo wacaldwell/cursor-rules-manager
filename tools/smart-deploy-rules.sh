@@ -9,13 +9,16 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURSOR_RULES_DIR="$(dirname "$SCRIPT_DIR")"
 CONFIG_FILE="$CURSOR_RULES_DIR/config/deployment.conf"
-LOG_FILE="/Users/alexcaldwell/the-warehouse/logs/cursor-rules-manager/smart-deploy-rules.log"
+LOG_FILE="${LOG_DIR}/cursor-rules-manager/smart-deploy-rules.log"
 
 # Ensure log directory exists
 mkdir -p "$(dirname "$LOG_FILE")"
 
 # 🔥 GLOBAL EXECUTION TRACKING - Enhanced logging with global tracking!
-source "/Users/alexcaldwell/the-warehouse/logs/global-execution-tracker/lib/global-logging.sh"
+if [[ -n "${GLOBAL_LOGGER:-}" && -f "$GLOBAL_LOGGER" ]]; then
+    # shellcheck disable=SC1090
+    source "$GLOBAL_LOGGER" || true
+fi
 
 # Logging functions
 log() {
@@ -51,8 +54,26 @@ load_config() {
         exit 1
     fi
     
+    # Preserve environment variables that may have been set by wrapper script
+    local preserve_template_change="${DEPLOY_ON_TEMPLATE_CHANGE_ONLY:-}"
+    
     log_debug "Loading configuration from $CONFIG_FILE"
     source "$CONFIG_FILE"
+    
+    # Restore preserved environment variables (they take precedence over config file)
+    if [[ -n "$preserve_template_change" ]]; then
+        DEPLOY_ON_TEMPLATE_CHANGE_ONLY="$preserve_template_change"
+        log_debug "Preserved DEPLOY_ON_TEMPLATE_CHANGE_ONLY=$DEPLOY_ON_TEMPLATE_CHANGE_ONLY from environment"
+    fi
+    
+    # Expand environment variables in target paths
+    GLOBAL_TARGET=$(eval echo "$GLOBAL_TARGET")
+    PROJECTS_TARGET=$(eval echo "$PROJECTS_TARGET") 
+    SCRIPTS_TARGET=$(eval echo "$SCRIPTS_TARGET")
+    BACKUP_DIR=$(eval echo "$BACKUP_DIR")
+    
+    log_debug "Expanded paths: GLOBAL_TARGET=$GLOBAL_TARGET, PROJECTS_TARGET=$PROJECTS_TARGET, SCRIPTS_TARGET=$SCRIPTS_TARGET"
+    
     log_success "Configuration loaded successfully"
 }
 
@@ -253,24 +274,24 @@ deploy_all_rules() {
     local deployment_count=0
     local failure_count=0
     
-    # Deploy to warehouse root
-    if deploy_to_target "$WAREHOUSE_TEMPLATE" "$WAREHOUSE_TARGET" "warehouse-global"; then
+    # Deploy to global root
+    if deploy_to_target "$GLOBAL_TEMPLATE" "$GLOBAL_TARGET" "global"; then
         ((deployment_count++))
     else
         ((failure_count++))
         if [[ "${STOP_ON_FAILURE:-true}" == "true" ]]; then
-            log_error "Deployment failed for warehouse - stopping due to STOP_ON_FAILURE policy"
+            log_error "Deployment failed for global - stopping due to STOP_ON_FAILURE policy"
             return 1
         fi
     fi
     
-    # Deploy to aws-cli-jobox
-    if deploy_to_target "$AWS_CLI_JOBOX_TEMPLATE" "$AWS_CLI_JOBOX_TARGET" "aws-cli-jobox"; then
+    # Deploy to projects directory
+    if deploy_to_target "$PROJECTS_TEMPLATE" "$PROJECTS_TARGET" "projects"; then
         ((deployment_count++))
     else
         ((failure_count++))
         if [[ "${STOP_ON_FAILURE:-true}" == "true" ]]; then
-            log_error "Deployment failed for aws-cli-jobox - stopping due to STOP_ON_FAILURE policy"
+            log_error "Deployment failed for projects - stopping due to STOP_ON_FAILURE policy"
             return 1
         fi
     fi
