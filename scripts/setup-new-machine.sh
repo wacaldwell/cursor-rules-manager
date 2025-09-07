@@ -1,7 +1,11 @@
 #!/bin/bash
 
 # 🔥 GLOBAL EXECUTION TRACKING - Minimal global tracking!
-source "/Users/alexcaldwell/the-warehouse/logs/global-execution-tracker/lib/global-logging.sh" 2>/dev/null || true
+# If GLOBAL_LOGGER is defined in env, source it; otherwise noop
+if [[ -n "${GLOBAL_LOGGER:-}" && -f "$GLOBAL_LOGGER" ]]; then
+    # shellcheck disable=SC1090
+    source "$GLOBAL_LOGGER" || true
+fi
 # Automated setup script for Cursor Rule Manager on new machines
 # This script sets up the complete DevOps rules management system
 
