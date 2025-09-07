@@ -1,0 +1,119 @@
+#!/bin/bash
+# Git Post-Merge Hook for Cursor Rules Auto-Deployment
+# Automatically deploys cursor rules when Git Flow releases are finished
+# Part of the cursor-rules-manager automated deployment system
+
+set -euo pipefail
+
+# Configuration
+HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CURSOR_RULES_DIR="/Users/alexcaldwell/the-warehouse/scripts/cursor-rules-manager"
+SMART_DEPLOY_SCRIPT="$CURSOR_RULES_DIR/tools/smart-deploy-rules.sh"
+HOOK_LOG="/Users/alexcaldwell/the-warehouse/logs/cursor-rules-manager/post-merge-hook.log"
+
+# Ensure log directory exists
+mkdir -p "$(dirname "$HOOK_LOG")"
+
+# Logging functions
+log_hook() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') [POST-MERGE-HOOK] $1" | tee -a "$HOOK_LOG"
+}
+
+log_info() {
+    log_hook "ℹ️  $1"
+}
+
+log_success() {
+    log_hook "✅ $1"
+}
+
+log_warning() {
+    log_hook "⚠️  $1"
+}
+
+log_error() {
+    log_hook "❌ $1"
+}
+
+# Check if this is a Git Flow release merge
+is_release_merge() {
+    # Get the merge commit message
+    local merge_msg=$(git log -1 --pretty=%B 2>/dev/null || echo "")
+    
+    # Check for Git Flow release finish patterns
+    if echo "$merge_msg" | grep -q "Merge branch 'release/"; then
+        log_info "Git Flow release merge detected"
+        return 0
+    fi
+    
+    # Check for Git Flow hotfix finish patterns  
+    if echo "$merge_msg" | grep -q "Merge branch 'hotfix/"; then
+        log_info "Git Flow hotfix merge detected"
+        return 0
+    fi
+    
+    # Check for manual release tag patterns
+    if echo "$merge_msg" | grep -qE "release|Release|RELEASE"; then
+        log_info "Release-related merge detected"
+        return 0
+    fi
+    
+    log_info "Non-release merge detected - skipping cursor rules deployment"
+    return 1
+}
+
+# Check if cursor rules manager directory exists
+check_cursor_rules_manager() {
+    if [[ ! -d "$CURSOR_RULES_DIR" ]]; then
+        log_error "Cursor rules manager directory not found: $CURSOR_RULES_DIR"
+        return 1
+    fi
+    
+    if [[ ! -f "$SMART_DEPLOY_SCRIPT" ]]; then
+        log_error "Smart deploy script not found: $SMART_DEPLOY_SCRIPT"
+        return 1
+    fi
+    
+    return 0
+}
+
+# Main hook execution
+main() {
+    log_info "=== Post-Merge Hook Triggered ==="
+    
+    # Check if we're in the cursor-rules-manager repository
+    local repo_name=$(basename "$(git rev-parse --show-toplevel 2>/dev/null || echo 'unknown')")
+    log_info "Repository: $repo_name"
+    
+    # Only process if this is the cursor-rules-manager repository
+    if [[ "$repo_name" != "cursor-rules-manager" ]]; then
+        log_info "Not in cursor-rules-manager repository - skipping"
+        exit 0
+    fi
+    
+    # Check if this is a release merge
+    if ! is_release_merge; then
+        exit 0
+    fi
+    
+    # Verify cursor rules manager setup
+    if ! check_cursor_rules_manager; then
+        log_error "Cursor rules manager setup validation failed"
+        exit 1
+    fi
+    
+    # Execute smart deployment
+    log_info "Executing smart cursor rules deployment..."
+    
+    if "$SMART_DEPLOY_SCRIPT"; then
+        log_success "🎉 Cursor rules auto-deployment completed successfully!"
+    else
+        log_error "❌ Cursor rules auto-deployment failed!"
+        exit 1
+    fi
+    
+    log_info "=== Post-Merge Hook Completed ==="
+}
+
+# Execute main function
+main "$@"

@@ -1,0 +1,48 @@
+# Cursor Rules - Base Global Template
+# This template contains core rules shared across all workspace directories
+
+## AI ASSISTANT BEHAVIOR REQUIREMENTS - CRITICAL
+- **MANDATORY PLANNING APPROVAL**: Before executing any commands, file changes, or automation:
+  1. Present a concrete plan with specific steps
+  2. Explain potential impacts and risks
+  3. Wait for explicit user approval before proceeding
+  4. No assumptions - always ask for clarification when uncertain
+
+## MCP SERVER REQUIREMENTS - CRITICAL
+- **AWS Operations**: When creating plans involving AWS, consult AWS MCP servers for guidance on:
+  - Cost effectiveness and optimization recommendations
+  - Security best practices and compliance requirements
+  - Service selection and configuration best practices
+  - This includes guidance for: EC2, S3, IAM, CloudFormation, Route53, and all other AWS services
+- **Terraform Operations**: When creating infrastructure plans, consult HashiCorp's Terraform MCP servers for guidance on:
+  - Cost effectiveness and resource optimization
+  - Security configurations and best practices
+  - Infrastructure design patterns and recommendations
+  - This applies to all infrastructure-as-code planning and implementation
+
+## LOGGING REQUIREMENTS - CRITICAL
+- ALL scripts must log to: /Users/alexcaldwell/the-warehouse/logs/
+- Use appropriate subdirectories for different script categories
+- Log file naming convention: `script-name.log` 
+- Use log rotation to manage file size (logrotate or similar)
+- Include log levels: INFO, WARN, ERROR, DEBUG
+- Log both successful operations and errors
+- Always include timestamps in log entries
+- Append to existing log file - do NOT create new files for each run
+
+## GLOBAL EXECUTION TRACKING - CRITICAL
+- ALL scripts must integrate with global execution tracker
+- Add this line after defining LOG_FILE: `source "/Users/alexcaldwell/the-warehouse/logs/global-execution-tracker/lib/global-logging.sh"`
+- This provides centralized tracking of all script executions across the workspace
+
+## SCRIPT ORGANIZATION POLICY - CRITICAL
+- **PRIMARY DIRECTORIES**:
+  - `/Users/alexcaldwell/the-warehouse/aws-cli-jobox/` - PRODUCTION-READY scripts only
+  - `/Users/alexcaldwell/the-warehouse/scripts/` - Development, experimental, and specialized scripts
+
+- **DEFAULT LOCATION**: All new scripts should be created in `/Users/alexcaldwell/the-warehouse/scripts/` by default
+- **PROMOTION PROCESS**: Scripts can be promoted from scripts/ to aws-cli-jobox/ only after:
+  1. Thorough testing and validation
+  2. Proven reliability and usefulness
+  3. Proper documentation and error handling
+  4. Regular use in operational workflows
