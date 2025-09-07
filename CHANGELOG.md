@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.5.0] - 2025-09-07
+
+### Added
+- **Environment Configuration Support** - Dynamic path configuration from `.aws-cli-config.env` files
+- **Path Configuration Loader** - New `scripts/path-config.sh` for automatic environment detection
+- **Multi-Environment Support** - Support for different machine configurations and path structures
+
+### Changed
+- **Setup Script Refactored** - `scripts/setup-new-machine.sh` now uses dynamic paths instead of hardcoded ones
+- **Path Resolution Priority** - Checks multiple locations for configuration files:
+  1. `$HOME/.aws-cli-config.env`
+  2. `$WORK_DIR/.aws-cli-config.env`
+  3. `$WORK_DIR/.aws-cli-jobox.env` (backward compatible)
+  4. `$HOME/.aws-cli-jobox.env` (backward compatible)
+- **Fallback Behavior** - Prompts for `WORK_DIR` if no configuration files found (default: `$HOME/devops`)
+
+### Enhanced
+- **Portability** - System now automatically adapts to different machine environments
+- **Backward Compatibility** - Maintains support for existing `.aws-cli-jobox.env` configurations
+- **Documentation** - Updated README.md with path configuration precedence and usage
+
+### Technical
+- Removed hardcoded paths from setup scripts
+- Added environment variable support for `GLOBAL_LOGGER`
+- Improved error handling and directory creation logic
+
 ## [1.2.0] - 2025-08-07
 
 ### Added
