@@ -1,11 +1,20 @@
 #!/bin/bash
 
 # 🔥 GLOBAL EXECUTION TRACKING - Minimal global tracking!
-source "/Users/alexcaldwell/the-warehouse/logs/global-execution-tracker/lib/global-logging.sh" 2>/dev/null || true
+# If GLOBAL_LOGGER is defined in env, source it; otherwise noop
+if [[ -n "${GLOBAL_LOGGER:-}" && -f "$GLOBAL_LOGGER" ]]; then
+    # shellcheck disable=SC1090
+    source "$GLOBAL_LOGGER" || true
+fi
 # Automated setup script for Cursor Rule Manager on new machines
 # This script sets up the complete DevOps rules management system
 
 set -euo pipefail
+
+# Load path configuration (env file or prompt fallback)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck disable=SC1090
+. "$SCRIPT_DIR/path-config.sh"
 
 # Colors for output
 RED='\033[0;31m'
@@ -15,9 +24,9 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Configuration
-WAREHOUSE_ROOT="/Users/alexcaldwell/the-warehouse"
-CURSOR_RULES_DIR="$WAREHOUSE_ROOT/aws-cli-jobox/cursor-rules-manager"
 REPO_URL="git@github.com:wacaldwell/cursor-rules-manager.git"
+REPO_BASE="${WORK_DIR}/projects"
+REPO_DIR="${REPO_BASE}/cursor-rule-manager"
 
 # Logging
 log() {
@@ -79,30 +88,33 @@ check_prerequisites() {
 create_directories() {
     log_info "Creating directory structure..."
     
-    # Create log directories in existing warehouse structure
-    mkdir -p "$WAREHOUSE_ROOT/logs/cursor-rules-manager"
-    mkdir -p "$WAREHOUSE_ROOT/logs"/{git-hooks,sync-rules,validate-rules,backup-rules}
+    # Create main directories
+    mkdir -p "$WORK_DIR"/{scripts,projects,logs,reports}
+    mkdir -p "$WORK_DIR"/logs/{git-hooks,sync-rules,validate-rules,backup-rules}
     
-    # Ensure cursor-rules-manager directory exists
-    mkdir -p "$CURSOR_RULES_DIR"
+    # Set permissions (best-effort)
+    if command -v chown >/dev/null 2>&1; then
+        chown -R "$(whoami):staff" "$WORK_DIR" 2>/dev/null || true
+    fi
     
-    log_success "Directory structure created using existing warehouse organization"
+    log_success "Directory structure created"
 }
 
 # Initialize repository
 initialize_repository() {
     log_info "Initializing cursor rules repository..."
     
-    cd "$CURSOR_RULES_DIR"
+    mkdir -p "$REPO_BASE"
+    cd "$REPO_BASE"
     
-    if [[ -d ".git" ]]; then
+    if [[ -d "$REPO_DIR" ]]; then
         log_warning "Repository already exists. Updating..."
-        git pull origin main 2>/dev/null || log_info "No remote configured yet"
-        git pull origin develop 2>/dev/null || log_info "No develop branch yet"
+        cd "$REPO_DIR"
+        git pull origin main
+        git pull origin develop
     else
-        log_info "Initializing new git repository..."
-        git init
-        git remote add origin "$REPO_URL" 2>/dev/null || log_info "Remote may already exist"
+        git clone "$REPO_URL"
+        cd "$REPO_DIR"
     fi
     
     # Initialize Git Flow if not already done
@@ -120,11 +132,11 @@ initialize_repository() {
 setup_tools() {
     log_info "Setting up automation tools..."
     
-    cd "$CURSOR_RULES_DIR"
+    cd "$REPO_DIR"
     
     # Make tools executable if they exist
     if [[ -d "tools" ]] && [[ -n "$(ls tools/*.sh 2>/dev/null)" ]]; then
-        chmod +x tools/*.sh
+        chmod +x tools/*.sh 2>/dev/null || true
         log_success "Made tools executable"
     else
         log_info "No tools directory found - this will be created when we implement the full system"
@@ -137,6 +149,13 @@ setup_tools() {
     else
         log_info "No git hooks found yet - these will be added later"
     fi
+
+    # Test validation if available
+    if [[ -x ./tools/validate-rules.sh ]] && ./tools/validate-rules.sh; then
+        log_success "Validation tool working correctly"
+    else
+        log_warning "Validation tool has warnings or is not present"
+    fi
     
     log_success "Tools setup completed"
 }
@@ -145,14 +164,18 @@ setup_tools() {
 initial_sync() {
     log_info "Running initial rules sync..."
     
-    cd "$CURSOR_RULES_DIR"
+    cd "$REPO_DIR"
     
-    # For now, just copy the .cursorrules to the aws-cli-jobox directory
-    if [[ -f ".cursorrules" ]]; then
-        cp .cursorrules "$WAREHOUSE_ROOT/aws-cli-jobox/.cursorrules"
-        log_success "Copied cursor rules to aws-cli-jobox"
+    # Create log directories for any missing scripts
+    if [[ -x tools/create-log-directories.sh ]]; then
+        ./tools/create-log-directories.sh
+    fi
+    
+    # Run sync
+    if [[ -x ./tools/sync-rules.sh ]]; then
+        ./tools/sync-rules.sh
     else
-        log_info "No .cursorrules file found yet - will be created when system is fully implemented"
+        log_warning "Sync tool not found; skipping initial sync"
     fi
     
     log_success "Initial sync completed"
@@ -162,35 +185,28 @@ initial_sync() {
 verify_setup() {
     log_info "Verifying setup..."
     
-    # Check that cursor-rules-manager directory exists and is set up
-    if [[ -d "$CURSOR_RULES_DIR" ]]; then
-        log_success "Cursor rules manager directory exists"
+    # Check that rules files exist in working directories
+    if [[ -f "$WORK_DIR/scripts/.cursorrules" ]]; then
+        log_success "Scripts rules deployed correctly"
     else
-        log_error "Cursor rules manager directory not found"
+        log_error "Scripts rules not found"
         return 1
     fi
     
-    # Check that log directories exist
-    if [[ -d "$WAREHOUSE_ROOT/logs/cursor-rules-manager" ]]; then
-        log_success "Log directories created correctly"
+    if [[ -f "$WORK_DIR/projects/.cursorrules" ]]; then
+        log_success "Projects rules deployed correctly"
     else
-        log_error "Log directories not found"
+        log_error "Projects rules not found"
         return 1
     fi
     
-    # Check if Git is initialized
-    cd "$CURSOR_RULES_DIR"
-    if [[ -d ".git" ]]; then
-        log_success "Git repository initialized"
-        
-        # Test Git Flow if available
-        if git flow version &> /dev/null && git config --get gitflow.branch.master &> /dev/null; then
-            log_success "Git Flow is available and configured"
-        else
-            log_info "Git Flow not configured - will use standard git workflow"
-        fi
+    # Check Git Flow is working
+    cd "$REPO_DIR"
+    if git flow feature start test-setup; then
+        git flow feature finish test-setup
+        log_success "Git Flow working correctly"
     else
-        log_error "Git repository not initialized"
+        log_error "Git Flow not working properly"
         return 1
     fi
     
@@ -210,10 +226,9 @@ main() {
     
     log_success "🎉 Cursor Rule Manager setup completed successfully!"
     log_info "Next steps:"
-    log_info "1. Review $CURSOR_RULES_DIR/docs/WORK_MACHINE_SETUP_GUIDE.md"
-    log_info "2. Check $CURSOR_RULES_DIR/docs/QUICK_REFERENCE_CARD.md for daily usage"
-    log_info "3. Start making rule changes with: cd $CURSOR_RULES_DIR"
-    log_info "4. The system is integrated with your existing warehouse structure at $WAREHOUSE_ROOT"
+    log_info "1. Review $REPO_DIR/docs/WORK_MACHINE_SETUP_GUIDE.md"
+    log_info "2. Check $REPO_DIR/docs/QUICK_REFERENCE_CARD.md for daily usage"
+    log_info "3. Start making rule changes with: cd $REPO_DIR && git flow feature start my-first-change"
 }
 
 # Run main function
