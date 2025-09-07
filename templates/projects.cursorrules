@@ -1,0 +1,57 @@
+# Cursor Rules - Projects Additional Template
+# Additional rules specific to structured development projects
+# These rules are concatenated with base-global.cursorrules during deployment
+
+# =============================================================================
+# PROJECTS-SPECIFIC ADDITIONAL RULES
+# =============================================================================
+
+## PROJECT STRUCTURE REQUIREMENTS - ENHANCED
+- **MANDATORY PROJECT FILES**:
+  - README.md with setup, usage, and deployment instructions
+  - .gitignore appropriate to the project type and technology stack
+  - requirements.txt (Python), package.json (Node.js), or equivalent dependency file
+  - config/ directory for environment-specific configurations
+  - tests/ directory for test files and test configurations
+  - docs/ directory for comprehensive project documentation
+
+## WORK SESSION LOGGING (MANDATORY)
+- Every time work is performed on a project (debugging, development, planning, maintenance, etc.), a session log entry must be created or updated in a file named `SESSION-NOTES.md` (or `DEBUG-SESSION-NOTES.md` if preferred) at the root of the project.
+- Each entry must include:
+  - Date/time
+  - What was worked on
+  - Status/findings
+  - Next steps
+- New entries go at the top (most recent first).
+- This ensures continuity and rapid onboarding for all contributors.
+
+## PROJECT LIFECYCLE MANAGEMENT
+- **DEVELOPMENT PHASES**: Projects should follow structured development phases
+- **VERSION CONTROL**: Use semantic versioning for project releases
+- **DOCUMENTATION**: Maintain up-to-date documentation throughout development
+- **TESTING**: Include comprehensive testing strategies and test coverage
+- **DEPLOYMENT**: Document deployment procedures and environment requirements
+
+## MULTI-PROJECT WORKSPACE AWARENESS
+- **CROSS-PROJECT DEPENDENCIES**: Document and manage dependencies between projects
+- **SHARED RESOURCES**: Use shared libraries and configurations appropriately
+- **PROJECT ISOLATION**: Maintain clear boundaries between different projects
+- **RESOURCE CONFLICTS**: Avoid port conflicts and resource contention between projects
+
+## TECHNOLOGY-SPECIFIC ENHANCEMENTS
+- **Python Projects**: Use virtual environments, type hints, and proper package structure
+- **Node.js Projects**: Follow npm best practices, use appropriate package managers
+- **Infrastructure Projects**: Use Infrastructure as Code principles
+- **Web Applications**: Follow security best practices, responsive design principles
+
+## COLLABORATION AND TEAMWORK
+- **CODE REVIEWS**: All significant changes should go through code review process
+- **BRANCH STRATEGY**: Use appropriate branching strategy for project complexity
+- **COMMUNICATION**: Document decisions, architectural choices, and trade-offs
+- **KNOWLEDGE SHARING**: Ensure project knowledge is accessible to all team members
+
+## PRODUCTION READINESS
+- **MONITORING**: Include logging, metrics, and monitoring capabilities
+- **SCALABILITY**: Consider scalability requirements and constraints
+- **SECURITY**: Implement security best practices throughout the project
+- **MAINTENANCE**: Plan for ongoing maintenance and updates

@@ -59,8 +59,26 @@ load_config() {
         exit 1
     fi
     
+    # Preserve environment variables that may have been set by wrapper script
+    local preserve_template_change="${DEPLOY_ON_TEMPLATE_CHANGE_ONLY:-}"
+    
     log_debug "Loading configuration from $CONFIG_FILE"
     source "$CONFIG_FILE"
+    
+    # Restore preserved environment variables (they take precedence over config file)
+    if [[ -n "$preserve_template_change" ]]; then
+        DEPLOY_ON_TEMPLATE_CHANGE_ONLY="$preserve_template_change"
+        log_debug "Preserved DEPLOY_ON_TEMPLATE_CHANGE_ONLY=$DEPLOY_ON_TEMPLATE_CHANGE_ONLY from environment"
+    fi
+    
+    # Expand environment variables in target paths
+    GLOBAL_TARGET=$(eval echo "$GLOBAL_TARGET")
+    PROJECTS_TARGET=$(eval echo "$PROJECTS_TARGET") 
+    SCRIPTS_TARGET=$(eval echo "$SCRIPTS_TARGET")
+    BACKUP_DIR=$(eval echo "$BACKUP_DIR")
+    
+    log_debug "Expanded paths: GLOBAL_TARGET=$GLOBAL_TARGET, PROJECTS_TARGET=$PROJECTS_TARGET, SCRIPTS_TARGET=$SCRIPTS_TARGET"
+    
     log_success "Configuration loaded successfully"
 }
 
