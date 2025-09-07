@@ -261,24 +261,24 @@ deploy_all_rules() {
     local deployment_count=0
     local failure_count=0
     
-    # Deploy to warehouse root
-    if deploy_to_target "$WAREHOUSE_TEMPLATE" "$WAREHOUSE_TARGET" "warehouse-global"; then
+    # Deploy to global root
+    if deploy_to_target "$GLOBAL_TEMPLATE" "$GLOBAL_TARGET" "global"; then
         ((deployment_count++))
     else
         ((failure_count++))
         if [[ "${STOP_ON_FAILURE:-true}" == "true" ]]; then
-            log_error "Deployment failed for warehouse - stopping due to STOP_ON_FAILURE policy"
+            log_error "Deployment failed for global - stopping due to STOP_ON_FAILURE policy"
             return 1
         fi
     fi
     
-    # Deploy to aws-cli-jobox
-    if deploy_to_target "$AWS_CLI_JOBOX_TEMPLATE" "$AWS_CLI_JOBOX_TARGET" "aws-cli-jobox"; then
+    # Deploy to projects directory
+    if deploy_to_target "$PROJECTS_TEMPLATE" "$PROJECTS_TARGET" "projects"; then
         ((deployment_count++))
     else
         ((failure_count++))
         if [[ "${STOP_ON_FAILURE:-true}" == "true" ]]; then
-            log_error "Deployment failed for aws-cli-jobox - stopping due to STOP_ON_FAILURE policy"
+            log_error "Deployment failed for projects - stopping due to STOP_ON_FAILURE policy"
             return 1
         fi
     fi

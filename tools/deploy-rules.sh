@@ -14,7 +14,7 @@ CURSOR_RULES_DIR="$(dirname "$SCRIPT_DIR")"
 . "$CURSOR_RULES_DIR/scripts/path-config.sh"
 
 SMART_DEPLOY_SCRIPT="$CURSOR_RULES_DIR/tools/smart-deploy-rules.sh"
-LOG_FILE="${LOG_DIR}/cursor-rules-manager/deploy-rules.log"
+LOG_FILE="${LOG_DIR}/cursor-rule-manager/deploy-rules.log"
 
 # Ensure log directory exists
 mkdir -p "$(dirname "$LOG_FILE")"
@@ -52,9 +52,9 @@ show_usage() {
     echo ""
     echo "Usage: $0 [OPTIONS]"
     echo ""
-    echo "This script deploys cursor rules to all workspace tiers:"
-    echo "  • Warehouse root (global rules)"
-    echo "  • AWS CLI Jobox (production rules)"  
+    echo "This script deploys cursor rules to all workspace directories:"
+    echo "  • Global root (base global rules)"
+    echo "  • Projects directory (project-specific rules)"  
     echo "  • Scripts directory (development rules)"
     echo ""
     echo "Options:"
@@ -74,10 +74,10 @@ show_usage() {
 
 # Legacy single-target deployment (backward compatibility)
 deploy_legacy() {
-    log_warning "Using legacy deployment mode - deploying only to aws-cli-jobox"
+    log_warning "Using legacy deployment mode - deploying only to projects directory"
     
-    local warehouse_root="$WORK_DIR"
-    local target_dir="$warehouse_root/aws-cli-jobox"
+    local work_root="$WORK_DIR"
+    local target_dir="$work_root/projects"
     local source_file="$CURSOR_RULES_DIR/.cursorrules"
     
     # Check if source file exists
@@ -89,7 +89,7 @@ deploy_legacy() {
     
     # Backup existing rules if they exist
     if [[ -f "$target_dir/.cursorrules" ]]; then
-        local backup_file="$warehouse_root/backups/cursor-rules-backup-$(date +%Y%m%d-%H%M%S)/aws-cli-jobox-cursorrules.backup"
+        local backup_file="$BACKUP_DIR/cursor-rules-backup-$(date +%Y%m%d-%H%M%S)/projects-cursorrules.backup"
         mkdir -p "$(dirname "$backup_file")"
         cp "$target_dir/.cursorrules" "$backup_file"
         log_success "Backed up existing cursor rules to $backup_file"
@@ -172,7 +172,7 @@ deploy_smart() {
         log_info "🔍 DRY RUN MODE - No changes will be made"
         log_info "This would deploy cursor rules to:"
         log_info "  📁 $WORK_DIR/.cursorrules (global)"
-        log_info "  📁 $WORK_DIR/aws-cli-jobox/.cursorrules (production)"
+        log_info "  📁 $WORK_DIR/projects/.cursorrules (projects)"
         log_info "  📁 $WORK_DIR/scripts/.cursorrules (development)"
         log_success "✨ Dry run completed - use without --dry-run to deploy"
         return 0
