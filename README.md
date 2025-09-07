@@ -39,6 +39,16 @@ cursor-rule-manager/
 2. Run the setup script: `./scripts/setup-new-machine.sh`
 3. Follow the validation steps in the guide
 
+### Path Configuration (New)
+- The setup now reads paths from `.aws-cli-config.env` if present.
+- Precedence order:
+  1. `$HOME/.aws-cli-config.env`
+  2. `$WORK_DIR/.aws-cli-config.env`
+  3. `$WORK_DIR/.aws-cli-jobox.env` (backwards compatible)
+  4. `$HOME/.aws-cli-jobox.env` (backwards compatible)
+- If none exist, you will be prompted for `WORK_DIR` (default: `$HOME/devops`).
+- Derived defaults (if not set): `LOG_DIR=$WORK_DIR/logs`, `REPORTS_DIR=$WORK_DIR/reports`, `BACKUP_DIR=$WORK_DIR/backups`.
+
 ### For Daily Usage
 - Reference `docs/QUICK_REFERENCE_CARD.md` for common commands
 - Use Git Flow workflow for all changes
