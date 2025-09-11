@@ -56,8 +56,8 @@
 
 ### Changed
 - **Directory Structure** - Enhanced organization with two primary script directories:
-  - `/Users/alexcaldwell/the-warehouse/aws-cli-jobox/` - Production-ready scripts only
-  - `/Users/alexcaldwell/the-warehouse/scripts/` - Development, experimental, and specialized scripts
+  - `$WORK_DIR/aws-cli-jobox/` - Production-ready scripts only
+  - `$WORK_DIR/scripts/` - Development, experimental, and specialized scripts
 - **Quality Gates** - Established requirements for production script promotion
 
 ### Policy Details
@@ -69,13 +69,13 @@
 ## [1.1.0] - 2025-08-07
 
 ### Added
-- Relocated cursor-rules-manager to /Users/alexcaldwell/the-warehouse/scripts/cursor-rules-manager/
+- Relocated cursor-rules-manager to $WORK_DIR/scripts/cursor-rules-manager/
 - Initialized proper git flow workflow with main and develop branches
 - GitHub repository integration at git@github.com:wacaldwell/cursor-rules-manager.git
 
 ### Changed  
 - Updated project location from aws-cli-jobox/cursor-rules-manager/ to scripts/cursor-rules-manager/
-- Maintained all logging paths at /Users/alexcaldwell/the-warehouse/logs/cursor-rules-manager/
+- Maintained all logging paths at $WORK_DIR/logs/cursor-rules-manager/
 - Preserved all existing functionality and documentation
 
 ### Technical

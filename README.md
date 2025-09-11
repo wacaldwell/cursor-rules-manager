@@ -86,9 +86,10 @@ This project follows the same Git Flow workflow it manages:
 
 ## 🏷 **Version**
 
-Current version: v1.4.0
-- Fixed MCP server requirements (consultation vs execution)
-- Updated repository paths for relocated installation
+Current version: v1.6.0
+- Environment-agnostic configuration system
+- Automatic workspace detection via global-parameters.env
+- Enhanced framework integration with devops-toolkit
 - Complete Git Flow workflow implementation
 
 ## 🤝 **Contributing**
