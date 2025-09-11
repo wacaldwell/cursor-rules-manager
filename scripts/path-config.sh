@@ -3,23 +3,28 @@ set -euo pipefail
 
 # Path configuration loader for Cursor Rule Manager
 # Priority:
-# 1) $HOME/.aws-cli-config.env
-# 2) $WORK_DIR/.aws-cli-config.env
-# 3) $WORK_DIR/.aws-cli-jobox.env (backward-compatible)
-# 4) $HOME/.aws-cli-jobox.env (backward-compatible)
+# 1) $WORK_DIR/global-parameters.env (current standard)
+# 2) $HOME/.devops-env (user-specific)
+# 3) $WORK_DIR/.aws-cli-config.env (legacy)
+# 4) $WORK_DIR/.aws-cli-jobox.env (legacy backward-compatible)
+# 5) $HOME/.aws-cli-jobox.env (legacy backward-compatible)
 # Fallback: prompt for WORK_DIR (default: $HOME/devops)
 
 resolve_path_config() {
     local default_work_dir
-    default_work_dir="${WORK_DIR:-${HOME}/devops}"
+    default_work_dir="${HOME}/devops"
 
-    # Build candidate list (skip empty WORK_DIR entries)
+    # Build candidate list with default work dir
+    local work_dir_to_check="${WORK_DIR:-$default_work_dir}"
     local candidates=()
-    candidates+=("${HOME}/.aws-cli-config.env")
-    if [[ -n "${WORK_DIR:-}" ]]; then
-        candidates+=("${WORK_DIR}/.aws-cli-config.env")
-        candidates+=("${WORK_DIR}/.aws-cli-jobox.env")
-    fi
+    
+    # Primary candidates
+    candidates+=("${work_dir_to_check}/global-parameters.env")
+    candidates+=("${HOME}/.devops-env")
+    
+    # Legacy candidates
+    candidates+=("${work_dir_to_check}/.aws-cli-config.env")
+    candidates+=("${work_dir_to_check}/.aws-cli-jobox.env")
     candidates+=("${HOME}/.aws-cli-jobox.env")
 
     for cfg in "${candidates[@]}"; do
@@ -34,9 +39,9 @@ resolve_path_config() {
         fi
     done
 
-    # If WORK_DIR still unset, prompt (interactive) or use default
+    # If WORK_DIR still unset, set to default (don't prompt unless interactive and no config found)
     if [[ -z "${WORK_DIR:-}" ]]; then
-        if [[ -t 0 && -t 1 ]]; then
+        if [[ -z "${PATH_CONFIG_FILE:-}" && -t 0 && -t 1 ]]; then
             read -r -p "Enter the root of your working directory (WORK_DIR) [${default_work_dir}]: " _input || true
             WORK_DIR="${_input:-$default_work_dir}"
         else

@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.6.0] - 2025-09-11
+
+### Added
+- **Global Parameters Support** - Updated to detect and use `global-parameters.env` as primary configuration
+- **DevOps Framework Alignment** - Enhanced templates to reflect current devops-toolkit and aws-cli-jobox architecture
+- **Environment Configuration Section** - Added critical environment configuration requirements to base template
+
+### Changed
+- **Path Detection Priority** - Updated `path-config.sh` to prioritize `global-parameters.env` over legacy files
+- **Template Updates** - Enhanced base-global template with current environment structure and project examples
+- **Version Sync** - Updated VERSION file to match actual release version (1.6.0)
+
+### Removed
+- **Legacy Template** - Removed obsolete `warehouse-global.cursorrules` template
+- **Warehouse Terminology** - Cleaned up any remaining legacy warehouse references
+
+### Enhanced
+- **Framework Integration** - Improved integration with devops-toolkit-installer and aws-cli-jobox projects
+- **Documentation Alignment** - Templates now reflect current project organization and environment setup
+
 ## [1.5.0] - 2025-09-07
 
 ### Added
