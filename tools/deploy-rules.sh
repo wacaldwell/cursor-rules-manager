@@ -223,7 +223,7 @@ main() {
             deploy_legacy
             ;;
         "smart")
-            deploy_smart "${remaining_args[@]}"
+            deploy_smart "${remaining_args[@]+"${remaining_args[@]}"}"
             ;;
         *)
             log_error "Unknown deployment mode: $mode"
