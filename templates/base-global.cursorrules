@@ -50,3 +50,10 @@
 - **Required Variables**: WORK_DIR, LOG_DIR, REPORTS_DIR, BACKUP_DIR, SHARED_LIBRARIES_DIR
 - **AWS Integration**: Use $AWS_CLI_CONFIG and $AWS_TAGGING_LIB for AWS operations
 - **Global Logging**: Use $GLOBAL_LOGGER for centralized execution tracking
+
+## GIT CHANGE MANAGEMENT - CRITICAL
+- **NO UNCOMMITTED CHANGES**: Never leave uncommitted changes in git-tracked directories
+- **IMMEDIATE COMMIT REQUIREMENT**: All changes in git-integrated directories must be committed
+- **WORKING DIRECTORY CLEAN**: Always maintain clean working directory status
+- **COMMIT BEFORE SWITCH**: Must commit all changes before switching branches or directories
+- **EXCEPTION**: Scripts directory (`$WORK_DIR/scripts/`) is intentionally not git-tracked
