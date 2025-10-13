@@ -46,7 +46,7 @@
   - Scripts directory for utilities, automation, and experimental code
   
 ## ENVIRONMENT CONFIGURATION - CRITICAL
-- **Global Parameters**: Source `$WORK_DIR/global-parameters.env` for environment variables
+- **Global Parameters**: Source `$WORK_DIR/.env` for environment variables
 - **Required Variables**: WORK_DIR, LOG_DIR, REPORTS_DIR, BACKUP_DIR, SHARED_LIBRARIES_DIR
 - **AWS Integration**: Use $AWS_CLI_CONFIG and $AWS_TAGGING_LIB for AWS operations
 - **Global Logging**: Use $GLOBAL_LOGGER for centralized execution tracking
