@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.7.0] - 2025-11-01
+
+### Added
+- **Terraform State Management** - Required S3 backend with DynamoDB state locking for all Terraform projects
+- Comprehensive best practices for Terraform state management including encryption, versioning, and access control
+- Configuration examples for S3 backend setup with DynamoDB locking
+
+### Changed
+- **Documentation Cleanup** - Removed all legacy personal/work profile references
+- Updated ARCHITECTURE.md to reflect current templates/ structure (removed old environments/ references)
+- Updated WORK_MACHINE_SETUP_GUIDE.md to show 3-tier deployment system
+- Corrected repository structure diagrams to match actual implementation
+- Updated automation tool references to current names (deploy-rules.sh, smart-deploy-rules.sh)
+
+### Removed
+- Legacy references to personal-scripts/.cursorrules
+- Outdated environments/ directory references
+- Old repository path references (devops-rules/)
+
 ## [1.6.0] - 2025-09-11
 
 ### Added
