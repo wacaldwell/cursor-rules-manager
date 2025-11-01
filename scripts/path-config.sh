@@ -3,11 +3,9 @@ set -euo pipefail
 
 # Path configuration loader for Cursor Rule Manager
 # Priority:
-# 1) $WORK_DIR/global-parameters.env (current standard)
-# 2) $HOME/.devops-env (user-specific)
-# 3) $WORK_DIR/.aws-cli-config.env (legacy)
-# 4) $WORK_DIR/.aws-cli-jobox.env (legacy backward-compatible)
-# 5) $HOME/.aws-cli-jobox.env (legacy backward-compatible)
+# 1) $WORK_DIR/.env (single environment file)
+# 2) $HOME/.devops-env (user-specific fallback)
+# 3) Legacy files (backward compatibility)
 # Fallback: prompt for WORK_DIR (default: $HOME/devops)
 
 resolve_path_config() {
@@ -19,10 +17,11 @@ resolve_path_config() {
     local candidates=()
     
     # Primary candidates
-    candidates+=("${work_dir_to_check}/global-parameters.env")
+    candidates+=("${work_dir_to_check}/.env")
     candidates+=("${HOME}/.devops-env")
     
-    # Legacy candidates
+    # Legacy candidates (backward compatibility)
+    candidates+=("${work_dir_to_check}/global-parameters.env")
     candidates+=("${work_dir_to_check}/.aws-cli-config.env")
     candidates+=("${work_dir_to_check}/.aws-cli-jobox.env")
     candidates+=("${HOME}/.aws-cli-jobox.env")

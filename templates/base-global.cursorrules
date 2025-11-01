@@ -20,6 +20,31 @@
   - Infrastructure design patterns and recommendations
   - This applies to all infrastructure-as-code planning and implementation
 
+## TERRAFORM STATE MANAGEMENT - CRITICAL
+- **BACKEND CONFIGURATION REQUIRED**: All Terraform projects MUST use remote backend with state locking
+- **S3 BACKEND**: Store state files in S3 bucket with:
+  - Encryption at rest enabled (AES-256 or KMS)
+  - Versioning enabled for state history and recovery
+  - Bucket naming convention: `terraform-state-{project}-{environment}`
+- **DYNAMODB STATE LOCKING**: Use DynamoDB table for state locking:
+  - Table naming convention: `terraform-state-lock-{project}`
+  - Primary key: `LockID` (String)
+  - Prevents concurrent modifications and state corruption
+- **BACKEND CONFIGURATION EXAMPLE**:
+  ```hcl
+  terraform {
+    backend "s3" {
+      bucket         = "terraform-state-myproject-prod"
+      key            = "terraform.tfstate"
+      region         = "us-east-1"
+      encrypt        = true
+      dynamodb_table = "terraform-state-lock-myproject"
+    }
+  }
+  ```
+- **NO LOCAL STATE**: Never commit terraform.tfstate files to git
+- **ACCESS CONTROL**: Ensure appropriate IAM permissions for S3 and DynamoDB access
+
 ## LOGGING REQUIREMENTS - CRITICAL
 - ALL scripts must log to: $LOG_DIR/ (resolved from environment configuration)
 - Use appropriate subdirectories for different script categories: $LOG_DIR/[script-name]/
@@ -46,7 +71,14 @@
   - Scripts directory for utilities, automation, and experimental code
   
 ## ENVIRONMENT CONFIGURATION - CRITICAL
-- **Global Parameters**: Source `$WORK_DIR/global-parameters.env` for environment variables
+- **Global Parameters**: Source `$WORK_DIR/.env` for environment variables
 - **Required Variables**: WORK_DIR, LOG_DIR, REPORTS_DIR, BACKUP_DIR, SHARED_LIBRARIES_DIR
 - **AWS Integration**: Use $AWS_CLI_CONFIG and $AWS_TAGGING_LIB for AWS operations
 - **Global Logging**: Use $GLOBAL_LOGGER for centralized execution tracking
+
+## GIT CHANGE MANAGEMENT - CRITICAL
+- **NO UNCOMMITTED CHANGES**: Never leave uncommitted changes in git-tracked directories
+- **IMMEDIATE COMMIT REQUIREMENT**: All changes in git-integrated directories must be committed
+- **WORKING DIRECTORY CLEAN**: Always maintain clean working directory status
+- **COMMIT BEFORE SWITCH**: Must commit all changes before switching branches or directories
+- **EXCEPTION**: Scripts directory (`$WORK_DIR/scripts/`) is intentionally not git-tracked

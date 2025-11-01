@@ -97,32 +97,32 @@ ls -la .git/hooks/
 ### Repository Structure
 ```
 cursor-rules-manager/
-├── environments/           # Environment-specific rules
-│   ├── scripts/.cursorrules     # Rules for scripts directory
-│   ├── projects/.cursorrules    # Rules for projects directory
-│   └── personal-scripts/.cursorrules  # Personal scripts rules
-├── templates/              # Templates for new projects
-│   ├── python-project.cursorrules
-│   ├── shell-scripts.cursorrules
-│   └── terraform.cursorrules
+├── templates/              # Rule templates for deployment
+│   ├── base-global.cursorrules      # Base rules for all tiers
+│   ├── projects.cursorrules         # Project-specific rules
+│   ├── scripts-dev.cursorrules      # Development scripts rules
+│   ├── global-root.cursorrules      # Global root rules
+│   └── aws-cli-jobox.cursorrules    # AWS CLI project rules
 ├── tools/                  # Automation scripts
-│   ├── sync-rules.sh           # Deploy rules to working directories
-│   ├── validate-rules.sh       # Validate rule consistency
-│   ├── backup-current-rules.sh # Backup existing rules
-│   └── create-log-directories.sh  # Setup log structure
-├── global/                 # Global rule documents
-│   └── global-rules-for-coding.md
-├── .git/hooks/            # Git automation
-│   ├── pre-commit             # Validates before commit
-│   └── post-commit            # Auto-syncs on main branch
-└── archive/               # Historical backups
+│   ├── deploy-rules.sh             # Deployment wrapper
+│   └── smart-deploy-rules.sh       # Smart deployment engine
+├── hooks/                  # Git hooks for automation
+│   ├── post-merge                  # Auto-deploy on releases
+│   └── install-hooks.sh            # Hook installer
+├── config/                 # Configuration
+│   └── deployment.conf             # Deployment settings
+├── scripts/                # Utility scripts
+│   ├── setup-new-machine.sh
+│   └── path-config.sh
+└── .git/hooks/            # Git automation (installed)
+    └── post-merge                  # Active deployment hook
 ```
 
-### Where Rules Get Deployed
-The system automatically syncs rules to these locations:
-- `/Volumes/para/resources/devops/scripts/.cursorrules`
-- `/Volumes/para/resources/devops/projects/.cursorrules`
-- `/Volumes/para/resources/devops/global-rules-for-coding.md`
+### Where Rules Get Deployed (3-Tier System)
+The system automatically deploys rules to these locations:
+- `$WORK_DIR/.cursorrules` (global root - base rules)
+- `$WORK_DIR/projects/.cursorrules` (project-specific rules)
+- `$WORK_DIR/scripts/.cursorrules` (development scripts rules)
 
 ## 🔄 **Workflow for Making Changes**
 

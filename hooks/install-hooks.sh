@@ -4,17 +4,27 @@
 
 set -euo pipefail
 
-# Configuration
+# Source environment configuration first
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURSOR_RULES_DIR="$(dirname "$SCRIPT_DIR")"
+
+# Load environment configuration
+if [[ -f "$CURSOR_RULES_DIR/scripts/path-config.sh" ]]; then
+    source "$CURSOR_RULES_DIR/scripts/path-config.sh"
+else
+    echo "❌ Cannot find path-config.sh - ensure cursor-rules-manager is properly set up"
+    exit 1
+fi
+
+# Configuration (now using environment variables)
 GIT_HOOKS_DIR="$CURSOR_RULES_DIR/.git/hooks"
-LOG_FILE="/Users/alexcaldwell/the-warehouse/logs/cursor-rules-manager/install-hooks.log"
+LOG_FILE="$LOG_DIR/cursor-rules-manager/install-hooks.log"
 
 # Ensure log directory exists
 mkdir -p "$(dirname "$LOG_FILE")"
 
 # 🔥 GLOBAL EXECUTION TRACKING - Enhanced logging with global tracking!
-source "/Users/alexcaldwell/the-warehouse/logs/global-execution-tracker/lib/global-logging.sh"
+source "$GLOBAL_LOGGER" || true
 
 # Logging functions
 log() {

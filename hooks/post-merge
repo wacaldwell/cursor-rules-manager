@@ -5,11 +5,21 @@
 
 set -euo pipefail
 
-# Configuration
+# Source environment configuration first
 HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CURSOR_RULES_DIR="/Users/alexcaldwell/the-warehouse/scripts/cursor-rules-manager"
+CURSOR_RULES_DIR="$(dirname "$HOOK_DIR")"
+
+# Load environment configuration
+if [[ -f "$CURSOR_RULES_DIR/scripts/path-config.sh" ]]; then
+    source "$CURSOR_RULES_DIR/scripts/path-config.sh"
+else
+    echo "❌ Cannot find path-config.sh - ensure cursor-rules-manager is properly set up"
+    exit 1
+fi
+
+# Configuration (now using environment variables)
 SMART_DEPLOY_SCRIPT="$CURSOR_RULES_DIR/tools/smart-deploy-rules.sh"
-HOOK_LOG="/Users/alexcaldwell/the-warehouse/logs/cursor-rules-manager/post-merge-hook.log"
+HOOK_LOG="$LOG_DIR/cursor-rules-manager/post-merge-hook.log"
 
 # Ensure log directory exists
 mkdir -p "$(dirname "$HOOK_LOG")"

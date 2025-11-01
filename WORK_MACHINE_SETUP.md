@@ -1,129 +1,128 @@
-# Cursor Rules Manager - Work Machine Setup Complete! 🎉
+# Cursor Rules Manager - Environment Setup Complete! 🎉
 
-The Cursor Rules Manager has been successfully adapted for your work machine at `/Users/alexcaldwell/the-warehouse/`.
+The Cursor Rules Manager has been successfully configured for your development environment and will automatically adapt to your workspace structure.
 
 ## ✅ What's Been Set Up
 
 ### Directory Structure
 ```
-/Users/alexcaldwell/the-warehouse/
-├── aws-cli-jobox/
-│   ├── .cursorrules                           # 🎯 ACTIVE cursor rules
-│   └── cursor-rules-manager/                  # 📁 Management system
+$WORK_DIR/                                      # Your workspace root (detected automatically)
+├── projects/
+│   └── cursor-rules-manager/                  # 📁 This management system
 │       ├── .cursorrules                       # 📄 Source cursor rules
-│       ├── tools/deploy-rules.sh              # 🚀 Deployment script
-│       ├── templates/new-environment.cursorrules
+│       ├── templates/                         # 📋 Rule templates
+│       ├── tools/                             # 🛠️ Deployment tools
 │       └── docs/                              # 📚 Documentation
-├── logs/cursor-rules-manager/                 # 📝 All system logs
-└── backups/                                   # 💾 Automatic backups
+├── logs/cursor-rules-manager/                 # 📊 All deployment logs  
+└── backups/cursor-rules-backup-*/             # 🔒 Automatic backups
 ```
 
-### Key Features
-- ✅ **Automatic Backups**: Your existing cursor rules have been backed up
-- ✅ **Warehouse Integration**: Uses your existing directory structure
-- ✅ **Simple Deployment**: Easy script to update cursor rules
-- ✅ **Comprehensive Logging**: All activities logged to `/Users/alexcaldwell/the-warehouse/logs/`
+**Environment Detection**: The system automatically detects your workspace by finding:
+- `$WORK_DIR/global-parameters.env` (current standard)
+- `$HOME/.devops-env` (user-specific)  
+- Legacy configuration files (backward compatible)
+
+### Core Features
+- ✅ **Environment Agnostic**: Automatically adapts to any workspace structure
+- ✅ **Git Flow Integration**: Uses proper feature/release branch workflow
+- ✅ **Simple Deployment**: Easy script to update cursor rules across your workspace
+- ✅ **Comprehensive Logging**: All activities logged to `$WORK_DIR/logs/`
 
 ## 🚀 How to Use
 
 ### Making Changes to Cursor Rules
-1. **Edit the source file**:
+
+1. **Edit the source templates**:
    ```bash
-   cd /Users/alexcaldwell/the-warehouse/aws-cli-jobox/cursor-rules-manager
-   # Edit .cursorrules with your changes
+   cd $WORK_DIR/projects/cursor-rules-manager
+   # Edit templates in templates/ directory
    ```
 
-2. **Deploy the changes**:
+2. **Deploy changes**:
    ```bash
    ./tools/deploy-rules.sh
    ```
 
-3. **That's it!** Your changes are now active in the aws-cli-jobox directory.
+### Daily Workflow
 
-### Quick Commands
 ```bash
 # Navigate to the manager
-cd /Users/alexcaldwell/the-warehouse/aws-cli-jobox/cursor-rules-manager
+cd $WORK_DIR/projects/cursor-rules-manager
+
+# Create a feature branch for changes
+git flow feature start update-rules
+
+# Edit templates or configuration
+# ... make your changes ...
 
 # Deploy cursor rules changes
 ./tools/deploy-rules.sh
 
 # Check deployment logs
-tail -f /Users/alexcaldwell/the-warehouse/logs/cursor-rules-manager/deploy-rules.log
+tail -f $WORK_DIR/logs/cursor-rules-manager/deploy-rules.log
 
-# View current active rules
-cat /Users/alexcaldwell/the-warehouse/aws-cli-jobox/.cursorrules
+# Finish the feature when satisfied
+git flow feature finish update-rules
 ```
 
-## 📋 Current Cursor Rules Features
+## 🎯 What Your Cursor Rules Now Include
 
 Your cursor rules now include:
 - ✅ **MCP Server Consultation**: AWS and Terraform guidance requirements
-- ✅ **Warehouse Logging**: All logs go to `/Users/alexcaldwell/the-warehouse/logs/`
+- ✅ **DevOps Environment Logging**: All logs go to `$WORK_DIR/logs/`
 - ✅ **AI Assistant Behavior**: Requires planning approval before execution
 - ✅ **Security Standards**: No hardcoded credentials, least privilege access
-- ✅ **Coding Standards**: DRY, KISS principles, proper error handling
+- ✅ **Environment Configuration**: Uses global-parameters.env for workspace setup
 
-## 🔧 Advanced Usage
+## 🔧 Backup and Recovery
 
-### Creating Templates for Different Projects
-1. Copy the template:
-   ```bash
-   cp templates/new-environment.cursorrules my-project.cursorrules
-   ```
+### If you need to restore from backup:
 
-2. Customize for your specific project needs
-
-3. Deploy when ready:
-   ```bash
-   cp my-project.cursorrules .cursorrules
-   ./tools/deploy-rules.sh
-   ```
-
-### Reverting Changes
-All deployments create automatic backups:
 ```bash
 # Find your backup
-ls /Users/alexcaldwell/the-warehouse/backups/cursor-rules-backup-*/
+ls $WORK_DIR/backups/cursor-rules-backup-*/
 
-# Restore from backup
-cp /Users/alexcaldwell/the-warehouse/backups/cursor-rules-backup-TIMESTAMP/aws-cli-jobox-cursorrules.backup \
-   /Users/alexcaldwell/the-warehouse/aws-cli-jobox/.cursorrules
+# Restore from backup (example - adjust paths as needed)
+cp $WORK_DIR/backups/cursor-rules-backup-TIMESTAMP/workspace-cursorrules.backup \
+   $WORK_DIR/.cursorrules
 ```
 
 ## 📊 System Integration
 
-This system integrates perfectly with your existing warehouse structure:
-- **Logs**: Uses your existing `/Users/alexcaldwell/the-warehouse/logs/` structure
-- **Reports**: Compatible with `/Users/alexcaldwell/the-warehouse/reports/`
-- **Backups**: Uses your existing `/Users/alexcaldwell/the-warehouse/backups/` 
-- **Projects**: Works within your `aws-cli-jobox` DevOps environment
+This system integrates perfectly with your existing devops environment structure:
+- **Logs**: Uses your existing `$WORK_DIR/logs/` structure
+- **Reports**: Compatible with `$WORK_DIR/reports/`
+- **Backups**: Uses your existing `$WORK_DIR/backups/` 
+- **Projects**: Works within your projects-based DevOps environment
 
-## 🎯 Next Steps
-
-1. **Test the system**: Try making a small change to `.cursorrules` and deploy it
-2. **Customize**: Adjust the cursor rules for your specific work needs  
-3. **Create templates**: Set up project-specific rule templates as needed
-4. **Regular maintenance**: Use the deployment script for all updates
-
-## 🆘 Troubleshooting
+## 🚨 Troubleshooting
 
 ### If deployment fails:
-1. Check logs: `tail /Users/alexcaldwell/the-warehouse/logs/cursor-rules-manager/deploy-rules.log`
-2. Verify paths exist: `ls -la /Users/alexcaldwell/the-warehouse/aws-cli-jobox/cursor-rules-manager/`
+1. Check logs: `tail $WORK_DIR/logs/cursor-rules-manager/deploy-rules.log`
+2. Verify paths exist: `ls -la $WORK_DIR/projects/cursor-rules-manager/`
 3. Check permissions: `chmod +x tools/deploy-rules.sh`
+4. Verify environment: `echo $WORK_DIR` should show your workspace root
+
+### If environment detection fails:
+1. Ensure `global-parameters.env` exists in your workspace root
+2. Check that `WORK_DIR` is properly set in your environment
+3. Run the path configuration test: `./scripts/path-config.sh`
 
 ### If you need to start over:
 ```bash
-# Restore from backup
-cp /Users/alexcaldwell/the-warehouse/backups/cursor-rules-backup-*/aws-cli-jobox-cursorrules.backup \
-   /Users/alexcaldwell/the-warehouse/aws-cli-jobox/.cursorrules
+# Restore from backup (adjust paths as needed)
+cp $WORK_DIR/backups/cursor-rules-backup-*/workspace-cursorrules.backup \
+   $WORK_DIR/.cursorrules
 ```
 
 ---
 
 ## 🎉 Success!
 
-Your Cursor Rules Manager is now fully operational and integrated with your work machine's directory structure. You have enterprise-grade cursor rules management with simple, reliable deployment! 
+Your Cursor Rules Manager is now:
+- ✅ **Environment Agnostic**: Works in any workspace structure
+- ✅ **Automatically Configured**: Detects your environment setup
+- ✅ **Git Flow Ready**: Proper branching and deployment workflow
+- ✅ **Fully Integrated**: Works with your existing DevOps toolkit
 
-The system respects your existing workspace organization while providing powerful cursor rules management capabilities.
+The system will now deploy cursor rules that match your current development environment and framework setup!

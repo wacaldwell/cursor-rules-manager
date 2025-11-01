@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.7.0] - 2025-11-01
+
+### Added
+- **Terraform State Management** - Required S3 backend with DynamoDB state locking for all Terraform projects
+- Comprehensive best practices for Terraform state management including encryption, versioning, and access control
+- Configuration examples for S3 backend setup with DynamoDB locking
+
+### Changed
+- **Documentation Cleanup** - Removed all legacy personal/work profile references
+- Updated ARCHITECTURE.md to reflect current templates/ structure (removed old environments/ references)
+- Updated WORK_MACHINE_SETUP_GUIDE.md to show 3-tier deployment system
+- Corrected repository structure diagrams to match actual implementation
+- Updated automation tool references to current names (deploy-rules.sh, smart-deploy-rules.sh)
+
+### Removed
+- Legacy references to personal-scripts/.cursorrules
+- Outdated environments/ directory references
+- Old repository path references (devops-rules/)
+
 ## [1.6.0] - 2025-09-11
 
 ### Added
@@ -56,8 +75,8 @@
 
 ### Changed
 - **Directory Structure** - Enhanced organization with two primary script directories:
-  - `/Users/alexcaldwell/the-warehouse/aws-cli-jobox/` - Production-ready scripts only
-  - `/Users/alexcaldwell/the-warehouse/scripts/` - Development, experimental, and specialized scripts
+  - `$WORK_DIR/aws-cli-jobox/` - Production-ready scripts only
+  - `$WORK_DIR/scripts/` - Development, experimental, and specialized scripts
 - **Quality Gates** - Established requirements for production script promotion
 
 ### Policy Details
@@ -69,13 +88,13 @@
 ## [1.1.0] - 2025-08-07
 
 ### Added
-- Relocated cursor-rules-manager to /Users/alexcaldwell/the-warehouse/scripts/cursor-rules-manager/
+- Relocated cursor-rules-manager to $WORK_DIR/scripts/cursor-rules-manager/
 - Initialized proper git flow workflow with main and develop branches
 - GitHub repository integration at git@github.com:wacaldwell/cursor-rules-manager.git
 
 ### Changed  
 - Updated project location from aws-cli-jobox/cursor-rules-manager/ to scripts/cursor-rules-manager/
-- Maintained all logging paths at /Users/alexcaldwell/the-warehouse/logs/cursor-rules-manager/
+- Maintained all logging paths at $WORK_DIR/logs/cursor-rules-manager/
 - Preserved all existing functionality and documentation
 
 ### Technical
