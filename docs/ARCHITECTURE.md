@@ -6,53 +6,60 @@ The Cursor Rule Manager is built on a distributed architecture that separates ru
 
 ## 🔧 **Core Components**
 
-### 1. DevOps Rules Repository (`devops-rules`)
-**Location**: `/Volumes/para/resources/devops/devops-rules/`
+### 1. DevOps Rules Repository (`cursor-rules-manager`)
+**Location**: `$WORK_DIR/projects/cursor-rules-manager/`
 **Purpose**: Central rule definitions and automation
 
 ```
-devops-rules/
-├── environments/           # Environment-specific rules
-│   ├── scripts/.cursorrules
-│   ├── projects/.cursorrules
-│   └── personal-scripts/.cursorrules
-├── templates/              # Reusable rule templates
+cursor-rules-manager/
+├── templates/              # Rule templates for deployment
+│   ├── base-global.cursorrules
+│   ├── projects.cursorrules
+│   ├── scripts-dev.cursorrules
+│   ├── global-root.cursorrules
+│   └── aws-cli-jobox.cursorrules
 ├── tools/                  # Automation scripts
-├── global/                 # Global rule documents
-└── .git/hooks/            # Git automation
+│   ├── deploy-rules.sh
+│   └── smart-deploy-rules.sh
+├── hooks/                  # Git hooks
+│   ├── post-merge
+│   └── install-hooks.sh
+├── config/                 # Configuration
+│   └── deployment.conf
+└── .git/hooks/            # Git automation (installed)
 ```
 
 **Key Features**:
 - Git Flow branching strategy
-- Automated validation via pre-commit hooks
-- Automatic deployment via post-commit hooks
+- Automated deployment via post-merge hooks
+- Smart 3-tier deployment system
 - Version tagging and semantic versioning
 
 ### 2. Working Directories
 **Purpose**: Active `.cursorrules` files used by Cursor IDE
 
-**Locations**:
-- `/Volumes/para/resources/devops/scripts/.cursorrules`
-- `/Volumes/para/resources/devops/projects/.cursorrules`
-- `/Volumes/para/resources/devops/global-rules-for-coding.md`
+**Locations** (3-tier deployment):
+- `$WORK_DIR/.cursorrules` (global root - base rules)
+- `$WORK_DIR/projects/.cursorrules` (project-specific rules)
+- `$WORK_DIR/scripts/.cursorrules` (development rules)
 
 **Characteristics**:
-- Read-only (managed by automation)
+- Managed by automation (read-only)
 - Automatically backed up before updates
 - Synchronized from repository on releases
 
 ### 3. Automation Layer
 **Components**:
-- **Validation Script** (`validate-rules.sh`)
-- **Sync Script** (`sync-rules.sh`)
-- **Backup Script** (`backup-current-rules.sh`)
-- **Git Hooks** (pre-commit, post-commit)
+- **Deploy Script** (`deploy-rules.sh` - wrapper for backward compatibility)
+- **Smart Deploy Script** (`smart-deploy-rules.sh` - main deployment engine)
+- **Git Hooks** (`post-merge` - automatic deployment on releases)
+- **Hook Installer** (`install-hooks.sh` - manages git hooks)
 
 **Functions**:
-- Rule consistency validation
-- Automatic deployment
-- Backup and recovery
-- Branch-aware automation
+- Automatic deployment on release merges
+- Smart 3-tier deployment with change detection
+- Backup and recovery before deployment
+- Branch-aware automation (release/hotfix only)
 
 ### 4. Logging System
 **Location**: `/Volumes/para/resources/devops/logs/`
