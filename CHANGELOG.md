@@ -1,5 +1,37 @@
 # Changelog
 
+## [1.8.0] - 2025-11-15
+
+### Added
+- **Two-Level Documentation Structure** - Category-level index + script-level detailed docs
+- **Category README as Index** - Catalog of all scripts in each category with status and quick reference
+- **Enhanced Script Organization Taxonomy** - 10 predefined categories for all scripts
+- **Mandatory Script Structure** - Required directory structure with config/, logs/, tests/
+- **Automatic Documentation Maintenance** - AI must update both category index and script docs
+- **Script Status Tracking** - Active/Development/Deprecated status in category index
+- **10 Categorical Directories**: monitoring, backup, deployment, infrastructure, cost-optimization, security, database, networking, maintenance, development
+
+### Changed
+- **Documentation Requirements** - Now requires TWO README files: category index + individual script details
+- **Script Organization Policy** - From flat structure to categorical taxonomy with mandatory documentation
+- **Logging Requirements** - Updated to include category in path: `$LOG_DIR/[category]/[script-name]/`
+- **AI Behavior** - Must maintain category index when adding/modifying/deprecating scripts
+- **Workspace Organization** - Base template now references detailed categorical structure in scripts-dev tier
+
+### Improved
+- **Discoverability** - Browse category index to quickly find available scripts
+- **Navigation** - Two-level structure makes it easy to explore and drill down
+- **Workspace Organization** - Prevents clutter with strict categorical structure
+- **Maintenance Tracking** - Last updated dates at both category and script levels
+- **Context and Indexing** - Each script has comprehensive documentation and configuration
+
+### Prohibited
+- Creating scripts at workspace root
+- Flat script directories without categorization
+- Scripts without README.md documentation
+- Categories without category-level README index
+- Adding scripts without updating category index
+
 ## [1.7.0] - 2025-11-01
 
 ### Added

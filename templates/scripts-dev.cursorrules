@@ -11,45 +11,274 @@
 - **RELAXED CONSTRAINTS**: More flexible requirements for new, unproven scripts
 - **ITERATIVE DEVELOPMENT**: Support for iterative development and testing approaches
 
-## SCRIPT LIFECYCLE MANAGEMENT
-- **DEFAULT LOCATION**: All new scripts should be created in scripts/ directory by default
-- **DEVELOPMENT PHASE**: Scripts in this directory are considered under development
-- **TESTING ENVIRONMENT**: Use this environment for testing and validation before production promotion
+## CATEGORICAL SCRIPT ORGANIZATION - MANDATORY
 
-## SCRIPT ORGANIZATION POLICY - DEVELOPMENT
-- **Development Scripts (scripts directory)**:
-  - New, unproven, or experimental scripts
-  - Specialized tools not used in daily operations
-  - Scripts under development or testing
-  - One-off or rarely used utilities
-  - Scripts that haven't reached production-ready status
+All scripts MUST be organized into categorical directories. **NO loose scripts at workspace root or flat directory structures.**
 
-## PROMOTION PROCESS TO PRODUCTION
-- Scripts can be promoted from scripts/ to aws-cli-jobox/ only after:
-  1. Thorough testing and validation
-  2. Proven reliability and usefulness
-  3. Proper documentation and error handling
-  4. Regular use in operational workflows
+### DIRECTORY TAXONOMY (REQUIRED):
+
+- **monitoring/** - Monitoring scripts, health checks, alerting, uptime validation
+- **backup/** - Backup automation, restore scripts, backup validation
+- **deployment/** - Deployment scripts, provisioning, orchestration
+- **infrastructure/** - Terraform, CloudFormation, IaC automation
+- **cost-optimization/** - Cost tracking, analysis, optimization tools
+- **security/** - Security scanning, compliance checking, auditing
+- **database/** - Database operations, backups, migrations, queries
+- **networking/** - Network configuration, DNS management, connectivity
+- **maintenance/** - Cleanup, log rotation, housekeeping
+- **development/** - Development utilities, helpers, dev environment tools
+
+## TWO-LEVEL DOCUMENTATION STRUCTURE - MANDATORY
+
+### Level 1: Category Directory (Index)
+```
+scripts/
+├── category/
+│   ├── README.md              # INDEX of all scripts in this category
+│   ├── script-one/
+│   ├── script-two/
+│   └── script-three/
+```
+
+### Level 2: Individual Script Directory (Details)
+```
+scripts/category/script-name/
+├── script-name.sh             # The actual script
+├── README.md                  # Detailed documentation for THIS script
+├── config/
+│   ├── .env.example
+│   └── config.yml
+├── logs/
+│   └── .gitkeep
+├── tests/
+│   └── test-script-name.sh
+└── docs/
+    └── USAGE.md
+```
+
+## CATEGORY-LEVEL README.md - MANDATORY
+
+Each category directory MUST have a `README.md` that serves as an **index/catalog**:
+
+```markdown
+# [Category Name] Scripts
+
+## Overview
+Brief description of what scripts in this category do.
+
+## Scripts in This Category
+
+### script-name-one
+- **Purpose**: One-line description
+- **Status**: [Active|Development|Deprecated]
+- **Last Updated**: YYYY-MM-DD
+- **Location**: `./script-name-one/`
+- **Quick Start**: `./script-name-one/script-name-one.sh [args]`
+
+### script-name-two
+- **Purpose**: One-line description
+- **Status**: [Active|Development|Deprecated]
+- **Last Updated**: YYYY-MM-DD
+- **Location**: `./script-name-two/`
+- **Quick Start**: `./script-name-two/script-name-two.sh [args]`
+
+## Category Standards
+- Logging: All scripts log to `$LOG_DIR/[category]/[script-name]/`
+- Configuration: Store configs in `./script-name/config/`
+- Testing: Test scripts in `./script-name/tests/`
+
+## Adding New Scripts
+1. Create new subdirectory: `mkdir -p script-name/{config,logs,tests,docs}`
+2. Add script with proper header
+3. Create script-level README.md
+4. **Update this index** with new script entry
+5. Test and validate before use
+```
+
+**KEY REQUIREMENT**: When adding a new script to an existing category, the AI MUST update the category-level README.md index.
+
+## SCRIPT-LEVEL README.md - MANDATORY
+
+Each individual script directory MUST have its own `README.md` with **detailed information**:
+
+```markdown
+# Script Name
+
+## Purpose
+Detailed description of what this script does and why it exists.
+
+## Dependencies
+- Tool/library 1 (version)
+- Tool/library 2 (version)
+- Environment variables: VAR1, VAR2, VAR3
+
+## Installation
+```bash
+# Setup commands
+cd /path/to/script
+cp config/.env.example config/.env
+# Edit configuration
+```
+
+## Configuration
+### Environment Variables
+- `VAR_NAME`: Description (required/optional, default: value)
+- `LOG_DIR`: Logging directory (required)
+
+### Config Files
+- `config/config.yml`: Description of settings
+
+## Usage
+```bash
+# Basic usage
+./script-name.sh
+
+# With options
+./script-name.sh --option value
+
+# Examples
+./script-name.sh --verbose --dry-run
+```
+
+### Parameters
+- `--option`: Description
+- `--flag`: Description
+
+## Logging
+- Location: `$LOG_DIR/category/script-name/script-name.log`
+- Format: Timestamped entries with log levels (INFO, WARN, ERROR, DEBUG)
+- Rotation: Handled by logrotate
+
+## Testing
+```bash
+# Run tests
+./tests/test-script-name.sh
+```
+
+## Troubleshooting
+### Common Issues
+- **Issue**: Description
+- **Solution**: Steps to fix
+
+## Last Updated
+YYYY-MM-DD - Brief description of changes
+```
+
+## AUTOMATIC DOCUMENTATION MAINTENANCE BY AI
+
+When user requests operations on scripts, AI assistant MUST:
+
+### Creating First Script in New Category:
+1. Create category directory: `scripts/[category]/`
+2. **Generate category-level README.md** with index structure
+3. Create script subdirectory: `scripts/[category]/[script-name]/`
+4. Generate script-level README.md with full details
+5. Create all supporting files (config/, logs/, tests/)
+
+### Adding Script to Existing Category:
+1. Create new script subdirectory: `scripts/[category]/[script-name]/`
+2. Generate script-level README.md with full details
+3. **UPDATE category-level README.md** to include new script in index
+4. Maintain alphabetical or logical ordering in index
+5. Update "Last Updated" date in category README
+
+### Modifying Existing Script:
+1. Update script code
+2. Update script-level README.md if behavior changes
+3. Update category-level README.md index if status/purpose changes
+4. Update "Last Updated" dates in both READMEs
+
+### Deprecating/Removing Script:
+1. Mark as "Deprecated" in category-level index
+2. Update script-level README with deprecation notice and alternatives
+3. Document migration path if applicable
+
+## REQUIRED: SCRIPT HEADERS
+
+Every script MUST include this header block:
+
+```bash
+#!/bin/bash
+# ==============================================================================
+# Script: script-name.sh
+# Category: [category-name]
+# Purpose: [One-line description]
+# 
+# Dependencies: [list tools, libraries]
+# Configuration: [list config files/env vars]
+# Logging: $LOG_DIR/category/script-name/script-name.log
+# 
+# Usage: script-name.sh [options]
+#   See README.md for detailed usage and examples
+# ==============================================================================
+```
+
+## EXAMPLE STRUCTURE
+
+```
+scripts/
+├── monitoring/
+│   ├── README.md                          # INDEX of all monitoring scripts
+│   ├── 404-monitor/
+│   │   ├── 404-monitor.sh
+│   │   ├── README.md                      # Detailed 404-monitor docs
+│   │   ├── config/
+│   │   │   ├── .env.example
+│   │   │   └── urls.txt
+│   │   ├── logs/
+│   │   │   └── .gitkeep
+│   │   └── tests/
+│   │       └── test-404-monitor.sh
+│   ├── sync-checker/
+│   │   ├── sync-checker.sh
+│   │   ├── README.md                      # Detailed sync-checker docs
+│   │   └── ...
+│   └── sitemap-validator/
+│       ├── sitemap-validator.sh
+│       ├── README.md                      # Detailed sitemap-validator docs
+│       └── ...
+├── backup/
+│   ├── README.md                          # INDEX of all backup scripts
+│   ├── db-backup/
+│   │   ├── db-backup.sh
+│   │   ├── README.md                      # Detailed db-backup docs
+│   │   └── ...
+│   └── nas-backup/
+│       ├── nas-backup.sh
+│       ├── README.md                      # Detailed nas-backup docs
+│       └── ...
+└── deployment/
+    ├── README.md                          # INDEX of all deployment scripts
+    └── ...
+```
+
+## BENEFITS OF TWO-LEVEL DOCUMENTATION
+
+- **Category Index**: Quick overview of all available scripts in a category
+- **Script Details**: Comprehensive documentation for each tool
+- **Easy Discovery**: Browse category README to find what you need
+- **Maintenance**: Clear ownership and update tracking
+- **Onboarding**: New users can browse categories, then drill into specifics
+- **Status Tracking**: Category index shows status of all scripts at a glance
 
 ## DEVELOPMENT STANDARDS
-- **MINIMUM VIABLE PRODUCT**: Focus on functionality first, optimization later
-- **DOCUMENTATION**: Basic documentation required, comprehensive docs for promotion
-- **ERROR HANDLING**: Basic error handling required, comprehensive for promotion
-- **TESTING**: Informal testing acceptable, formal testing required for promotion
 
-## EXPERIMENTAL FEATURES
-- **PROTOTYPE DEVELOPMENT**: Rapid prototyping is encouraged
-- **PROOF OF CONCEPT**: Scripts can be proof-of-concept implementations
-- **LEARNING AND EXPLORATION**: Environment supports learning new technologies and approaches
+- **DOCUMENTATION**: Category index + script details required for all scripts
+- **ERROR HANDLING**: Basic error handling required
+- **LOGGING**: All scripts log to `$LOG_DIR/category/script-name/`
+- **TESTING**: Test scripts encouraged in `tests/` directory
+
+## PROHIBITED PRACTICES
+
+- ❌ Creating scripts at workspace root
+- ❌ Flat `scripts/` directory with hundreds of files
+- ❌ Scripts without script-level README.md
+- ❌ Categories without category-level README.md index
+- ❌ Adding scripts to category without updating category index
+- ❌ Loose configuration files without proper structure
+- ❌ Undocumented scripts or utilities
 
 ## GIT REPOSITORY POLICIES
-- **SCRIPTS DIRECTORY NOT TRACKED**: The scripts/ directory is not tracked by git by design
-- **LOCAL DEVELOPMENT**: Scripts remain local until promoted to production
-- **VERSION CONTROL**: Scripts promoted to production must be properly version controlled
 
-## DEVELOPMENT WORKFLOW
-- **CREATE**: New scripts default to scripts/ directory
-- **ITERATE**: Develop and test in scripts/ environment
-- **VALIDATE**: Ensure scripts meet promotion criteria
-- **PROMOTE**: Move to aws-cli-jobox/ when production-ready
-- **MAINTAIN**: Continue maintenance in production environment
+- **SCRIPTS DIRECTORY NOT TRACKED**: The scripts/ directory is not tracked by git by design
+- **LOCAL DEVELOPMENT**: Scripts remain local and can be promoted to projects when appropriate
