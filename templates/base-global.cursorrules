@@ -47,7 +47,7 @@
 
 ## LOGGING REQUIREMENTS - CRITICAL
 - ALL scripts must log to: $LOG_DIR/ (resolved from environment configuration)
-- Use appropriate subdirectories for different script categories: $LOG_DIR/[script-name]/
+- Use appropriate subdirectories for different script categories: $LOG_DIR/[category]/[script-name]/
 - Log file naming convention: `script-name.log` (single continuous log file per script)
 - Use log rotation to manage file size (logrotate or similar)
 - Include log levels: INFO, WARN, ERROR, DEBUG
@@ -60,16 +60,15 @@
 - Source GLOBAL_LOGGER environment variable if set: `source "$GLOBAL_LOGGER" || true`
 - This provides centralized tracking of all script executions across the workspace
 
-## SCRIPT ORGANIZATION POLICY - CRITICAL
+## WORKSPACE ORGANIZATION - CRITICAL
 - **PRIMARY DIRECTORIES**:
   - `$WORK_DIR/projects/` - Structured development projects and applications
-  - `$WORK_DIR/scripts/` - Development, experimental, and utility scripts
+  - `$WORK_DIR/scripts/` - Categorical script organization (see scripts-dev tier for details)
 
-- **DEFAULT LOCATION**: All new scripts should be created in `$WORK_DIR/scripts/` by default
-- **ORGANIZATION PRINCIPLE**: 
-  - Projects directory for structured, multi-file applications (like devops-toolkit-installer, aws-cli-jobox, cursor-rules-manager)
-  - Scripts directory for utilities, automation, and experimental code
-  
+- **PROJECTS**: Multi-file applications with comprehensive structure (devops-toolkit-installer, aws-cli-jobox, cursor-rules-manager)
+- **SCRIPTS**: Categorical organization by purpose (monitoring, backup, deployment, infrastructure, cost-optimization, security, database, networking, maintenance, development)
+- **DETAILED TAXONOMY**: See scripts-dev.cursorrules for complete categorical structure and documentation requirements
+
 ## ENVIRONMENT CONFIGURATION - CRITICAL
 - **Global Parameters**: Source `$WORK_DIR/.env` for environment variables
 - **Required Variables**: WORK_DIR, LOG_DIR, REPORTS_DIR, BACKUP_DIR, SHARED_LIBRARIES_DIR
