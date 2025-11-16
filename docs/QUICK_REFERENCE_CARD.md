@@ -29,13 +29,20 @@ git add VERSION CHANGELOG.md
 git commit -m "Prepare release v1.x.x: Description"
 
 # Finish release with inline tag message (avoids editor prompt)
-git flow release finish -m "Release v1.x.x: Description" v1.x.x
+# ⚠️ macOS: Use hyphens instead of spaces in message (BSD getopt limitation)
+git flow release finish -m "Release-v1.x.x-Description" v1.x.x
+
+# Alternative: Set EDITOR to true to skip tag message prompt entirely
+# GIT_EDITOR=true git flow release finish v1.x.x
 
 # Push to GitHub
 git push origin main && git push origin develop && git push --tags
 ```
 
-**⚠️ Important**: Always use `-m "message"` flag with `git flow release finish` and `git flow hotfix finish` to provide the tag message inline. This prevents the git editor from opening, which is essential when the terminal is read-only.
+**⚠️ Important Notes**:
+- Always use `-m "message"` flag to avoid editor prompts
+- **macOS Users**: Replace spaces with hyphens in messages (BSD getopt limitation)
+- **Alternative**: Use `GIT_EDITOR=true git flow release finish v1.x.x` to skip tag message entirely
 
 ### Emergency Fixes
 ```bash
@@ -46,7 +53,8 @@ git add .
 git commit -m "Hotfix: Description of fix"
 
 # Finish hotfix with inline tag message (avoids editor prompt)
-git flow hotfix finish -m "Hotfix v1.x.x: Description" v1.x.x
+# ⚠️ macOS: Use hyphens instead of spaces (BSD getopt limitation)
+git flow hotfix finish -m "Hotfix-v1.x.x-Description" v1.x.x
 
 # Push immediately
 git push origin main && git push origin develop && git push --tags

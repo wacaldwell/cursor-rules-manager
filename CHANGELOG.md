@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.9.1] - 2025-11-16
+
+### Fixed
+- **macOS Git Flow Tag Message Issue** - Documented BSD getopt limitation that prevents spaces in `-m` messages
+  - Updated Quick Reference Card with hyphen-separated message format
+  - Updated Work Machine Setup Guide with macOS-specific instructions
+  - Added alternative solution using `GIT_EDITOR=true` prefix to skip tag messages entirely
+  - All examples now show correct format: `git flow release finish -m "Release-v1.x.x-Description" v1.x.x`
+
+### Documentation
+- Enhanced git flow workflow documentation with platform-specific considerations
+- Added Pro Tips section with multiple solutions for tag message handling
+- Clarified that spaces must be replaced with hyphens on macOS due to BSD getopt
+
 ## [1.9.0] - 2025-11-16
 
 ### Added
