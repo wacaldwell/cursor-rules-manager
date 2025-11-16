@@ -15,6 +15,28 @@
   - tests/ directory for test files and test configurations
   - docs/ directory for comprehensive project documentation
 
+## MANDATORY DOCUMENTATION FILES
+All new projects and scripts must include the following documentation structure:
+- **README.md**: Project overview, setup, usage, and deployment instructions (REQUIRED)
+- **docs/project-overview.md**: Comprehensive project description including:
+  - Purpose and goals
+  - Architecture and design decisions
+  - Key features and functionality
+  - Technology stack and dependencies
+  - System requirements and prerequisites
+- **docs/ai-notes.md**: AI assistant interaction notes including:
+  - Project context and background for AI assistants
+  - Key decisions and reasoning
+  - Common patterns and conventions used in the project
+  - Known issues and workarounds
+  - Tips for AI assistants working on this project
+- **docs/dev-log.md**: Development log tracking (OPTIONAL but RECOMMENDED):
+  - Chronological development history
+  - Major milestones and releases
+  - Problems encountered and solutions
+  - Performance optimizations and refactorings
+  - Future enhancement ideas
+
 ## WORK SESSION LOGGING (MANDATORY)
 - Every time work is performed on a project (debugging, development, planning, maintenance, etc.), a session log entry must be created or updated in a file named `SESSION-NOTES.md` (or `DEBUG-SESSION-NOTES.md` if preferred) at the root of the project.
 - Each entry must include:

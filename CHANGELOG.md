@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.9.0] - 2025-11-16
+
+### Added
+- **Enhanced Documentation Requirements** - All new projects and scripts must now include comprehensive documentation structure:
+  - `README.md` - Project overview, setup, usage, and deployment instructions (REQUIRED)
+  - `docs/project-overview.md` - Comprehensive project description with architecture, design decisions, features, and technology stack
+  - `docs/ai-notes.md` - AI assistant interaction notes with context, patterns, known issues, and tips for AI collaborators
+  - `docs/dev-log.md` - Chronological development history tracking (OPTIONAL but RECOMMENDED)
+- **Git Flow Workflow Enhancement** - Documented solution for git tag message issue in read-only terminals
+  - Added `-m "message"` flag usage for `git flow release finish` and `git flow hotfix finish` commands
+  - Prevents editor prompts that fail in read-only terminal environments
+  - Updated Quick Reference Card, Work Machine Setup Guide, and workflow documentation
+
+### Changed
+- **Project Structure Requirements** - Enhanced mandatory documentation section in projects.cursorrules
+- **Git Workflow Documentation** - All git flow commands now include inline tag messages to avoid editor prompts
+- **Best Practices** - Strengthened AI assistant context and project continuity through ai-notes.md requirement
+
+### Improved
+- **Project Onboarding** - New AI assistants can quickly understand project context via docs/ai-notes.md
+- **Development Tracking** - Optional dev-log.md provides historical context for decision-making
+- **Workflow Reliability** - Inline tag messages ensure git flow works in all terminal environments
+- **Knowledge Transfer** - Comprehensive documentation structure improves team collaboration and continuity
+
 ## [1.8.0] - 2025-11-15
 
 ### Added
