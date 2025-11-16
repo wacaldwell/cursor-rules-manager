@@ -27,19 +27,29 @@ echo "1.x.x" > VERSION
 # Commit and deploy
 git add VERSION CHANGELOG.md
 git commit -m "Prepare release v1.x.x: Description"
-git flow release finish v1.x.x
+
+# Finish release with inline tag message (avoids editor prompt)
+git flow release finish -m "Release v1.x.x: Description" v1.x.x
 
 # Push to GitHub
 git push origin main && git push origin develop && git push --tags
 ```
+
+**⚠️ Important**: Always use `-m "message"` flag with `git flow release finish` and `git flow hotfix finish` to provide the tag message inline. This prevents the git editor from opening, which is essential when the terminal is read-only.
 
 ### Emergency Fixes
 ```bash
 # Hotfix from main
 git flow hotfix start v1.x.x
 # Make fixes, commit
-git flow hotfix finish v1.x.x
+git add .
+git commit -m "Hotfix: Description of fix"
+
+# Finish hotfix with inline tag message (avoids editor prompt)
+git flow hotfix finish -m "Hotfix v1.x.x: Description" v1.x.x
+
 # Push immediately
+git push origin main && git push origin develop && git push --tags
 ```
 
 ## 🛠 **Tools**

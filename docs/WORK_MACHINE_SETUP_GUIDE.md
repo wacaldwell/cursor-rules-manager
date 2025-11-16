@@ -162,7 +162,8 @@ git add VERSION CHANGELOG.md
 git commit -m "Prepare release v1.x.x: Description of changes"
 
 # Finish the release (deploys to production)
-git flow release finish v1.x.x
+# ⚠️ IMPORTANT: Use -m flag to provide tag message inline (prevents editor prompt)
+git flow release finish -m "Release v1.x.x: Description of changes" v1.x.x
 
 # Push everything to GitHub
 git push origin main
@@ -183,7 +184,8 @@ git add .
 git commit -m "Hotfix: Critical issue description"
 
 # Finish hotfix (deploys immediately)
-git flow hotfix finish v1.x.x
+# ⚠️ IMPORTANT: Use -m flag to provide tag message inline (prevents editor prompt)
+git flow hotfix finish -m "Hotfix v1.x.x: Critical issue description" v1.x.x
 
 # Push everything
 git push origin main
@@ -338,7 +340,8 @@ git add VERSION CHANGELOG.md
 git commit -m "Prepare release v1.5.0: Add new coding standards"
 
 # 9. Deploy to production
-git flow release finish v1.5.0
+# ⚠️ Use -m flag to avoid editor prompt
+git flow release finish -m "Release v1.5.0: Add new coding standards" v1.5.0
 
 # 10. Push to GitHub
 git push origin main
@@ -347,6 +350,8 @@ git push --tags
 
 # Your changes are now live and automatically synced!
 ```
+
+**💡 Pro Tip**: Always use the `-m "message"` flag with `git flow release finish` and `git flow hotfix finish` commands. This provides the tag message inline and prevents git from opening an editor, which is essential when working with read-only terminals or automated workflows.
 
 ## 🎯 **Current System Status**
 
