@@ -1,1 +1,4 @@
 scripts/notion-update-commands.json
+# Incorrectly named backup directories from variable expansion bug
+${BACKUP_DIR}/
+*/${BACKUP_DIR}/
