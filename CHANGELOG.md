@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.10.0] - 2025-11-17
+
+### Added
+- **Checkpoint Commit Strategy** - Automated git commit workflow at logical breakpoints:
+  - Automatic commits after completing file creation, edits, refactorings, tests, and bug fixes
+  - Smart commit triggers at natural development milestones
+  - Comprehensive commit message standards with format guidelines and examples
+  - Safety rules to prevent committing broken or incomplete code
+  - Support for multi-file atomic changes
+  - Git flow workflow integration (commits to current branch)
+  
+### Enhanced
+- **Git Change Management** - Expanded section with detailed commit strategy guidelines
+- **Commit Safety** - Built-in checks: verify code compiles, run tests, ask user if uncertain
+- **Commit Messages** - Standardized format: `[Component/File]: Brief description` or `WIP: [Component]: Progress`
+- **Developer Experience** - Maintains clean git history with meaningful, atomic commits
+
+### Benefits
+- **No More Forgotten Commits** - Automatic checkpoint commits ensure nothing is left uncommitted
+- **Clean Git History** - Logical commit points create meaningful, reviewable history
+- **Safety First** - Multiple safeguards prevent committing broken code
+- **Workflow Integration** - Works seamlessly with existing git flow branching strategy
+
 ## [1.9.1] - 2025-11-16
 
 ### Fixed
