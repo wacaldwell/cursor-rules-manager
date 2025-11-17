@@ -75,7 +75,7 @@ load_config() {
     GLOBAL_TARGET=$(eval echo "$GLOBAL_TARGET")
     PROJECTS_TARGET=$(eval echo "$PROJECTS_TARGET") 
     SCRIPTS_TARGET=$(eval echo "$SCRIPTS_TARGET")
-    BACKUP_DIR=$(eval echo "$BACKUP_DIR")
+    CURSOR_BACKUP_DIR=$(eval echo "$CURSOR_BACKUP_DIR")
     
     log_debug "Expanded paths: GLOBAL_TARGET=$GLOBAL_TARGET, PROJECTS_TARGET=$PROJECTS_TARGET, SCRIPTS_TARGET=$SCRIPTS_TARGET"
     
@@ -171,7 +171,7 @@ backup_existing_rules() {
         return 0
     fi
     
-    local backup_dir="${BACKUP_DIR:-/tmp/cursor-rules-backups}/$(date +%Y%m%d-%H%M%S)"
+    local backup_dir="${CURSOR_BACKUP_DIR:-/tmp/cursor-rules-backups}/$(date +%Y%m%d-%H%M%S)"
     mkdir -p "$backup_dir"
     
     local backup_file="$backup_dir/${backup_name}.backup"

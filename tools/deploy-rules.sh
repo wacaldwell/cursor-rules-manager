@@ -89,7 +89,7 @@ deploy_legacy() {
     
     # Backup existing rules if they exist
     if [[ -f "$target_dir/.cursorrules" ]]; then
-        local backup_file="$BACKUP_DIR/cursor-rules-backup-$(date +%Y%m%d-%H%M%S)/projects-cursorrules.backup"
+        local backup_file="${CURSOR_BACKUP_DIR:-${BACKUP_DIR:-/tmp/cursor-rules-backups}}/cursor-rules-backup-$(date +%Y%m%d-%H%M%S)/projects-cursorrules.backup"
         mkdir -p "$(dirname "$backup_file")"
         cp "$target_dir/.cursorrules" "$backup_file"
         log_success "Backed up existing cursor rules to $backup_file"
