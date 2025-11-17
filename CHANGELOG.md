@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.10.1] - 2025-11-17
+
+### Fixed
+- **BACKUP_DIR Variable Circular Reference** - Fixed deployment.conf using BACKUP_DIR to define itself
+  - Changed to CURSOR_BACKUP_DIR to avoid circular reference
+  - Uses `${BACKUP_DIR:-${WORK_DIR}/backups}/cursor-rules-backups` with proper fallback
+  - Updated smart-deploy-rules.sh to use CURSOR_BACKUP_DIR
+  - Updated deploy-rules.sh with proper variable fallback
+  - Removed incorrectly named `${BACKUP_DIR}/` directories created from bug
+  - Added to .gitignore to prevent future tracking of literal variable names
+
+### Improved
+- Backup directory resolution now properly expands environment variables
+- Fallback logic ensures backups work even without BACKUP_DIR environment variable
+
 ## [1.10.0] - 2025-11-17
 
 ### Added
