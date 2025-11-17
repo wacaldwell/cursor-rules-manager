@@ -81,3 +81,44 @@
 - **WORKING DIRECTORY CLEAN**: Always maintain clean working directory status
 - **COMMIT BEFORE SWITCH**: Must commit all changes before switching branches or directories
 - **EXCEPTION**: Scripts directory (`$WORK_DIR/scripts/`) is intentionally not git-tracked
+
+### CHECKPOINT COMMIT STRATEGY
+Automatically create commits at logical breakpoints during development:
+
+**COMMIT TRIGGERS** - Create a checkpoint commit after:
+- Completing a file creation or major file edit
+- Finishing a refactoring that leaves code in working state
+- Adding or updating tests
+- Completing a bug fix
+- Before switching to a different component or task
+- After completing each requested feature or change
+- At the end of each AI interaction if changes were made
+
+**COMMIT MESSAGE STANDARDS**:
+- Use clear, descriptive commit messages that explain the change
+- Format: `[Component/File]: Brief description of change`
+- For incremental work: `WIP: [Component]: What was accomplished`
+- Include context for why the change was made when non-obvious
+- Examples:
+  * `docs/ai-notes.md: Add architecture decision records section`
+  * `WIP: authentication: Implement JWT token validation`
+  * `tests/api: Add integration tests for user endpoints`
+
+**COMMIT SAFETY RULES** - MUST FOLLOW:
+- NEVER commit if code is in broken or incomplete state
+- NEVER commit without verifying files compile/parse correctly
+- ALWAYS run applicable tests before committing (if tests exist)
+- ASK USER before committing if uncertain about completeness or correctness
+- For linting errors: Fix them before committing or ask user for guidance
+
+**MULTI-FILE ATOMIC CHANGES**:
+- For changes spanning multiple files that must work together:
+  * Complete all related changes first
+  * Verify everything works as a unit
+  * Then create a single atomic commit with all changes
+  * Commit message should describe the complete feature/fix
+
+**WORKFLOW INTEGRATION**:
+- Use existing branch (feature/hotfix) - do not create new branches automatically
+- Respect git flow workflow - commits go to current branch
+- After committing, briefly confirm: "✓ Committed: [commit message]"
