@@ -122,3 +122,18 @@ Automatically create commits at logical breakpoints during development:
 - Use existing branch (feature/hotfix) - do not create new branches automatically
 - Respect git flow workflow - commits go to current branch
 - After committing, briefly confirm: "✓ Committed: [commit message]"
+
+## GIT HOOKS - CRITICAL
+This project uses git hooks to maintain code quality:
+
+- **pre-commit**: Runs linters (eslint, prettier) and fixes formatting
+  - All code must pass linting before commit
+  - Auto-fixes are applied when possible
+  
+- **pre-push**: Runs test suite
+  - All tests must pass before pushing
+  - Can be skipped with --no-verify only for WIP branches
+
+When making changes, ensure code passes these checks. Never suggest
+using --no-verify, --no-gpg-sign, or other hook-skipping flags unless
+explicitly requested by the user.
