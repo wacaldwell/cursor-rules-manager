@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.11.0] - 2025-01-09
+
+### Added
+- **Git Hooks Rule** - Added comprehensive git hooks policy to maintain code quality:
+  - Pre-commit hooks for linting (eslint, prettier) with automatic formatting fixes
+  - Pre-push hooks for test suite execution
+  - Clear guidelines on when --no-verify flag can be used (WIP branches only)
+  - Explicit instruction to never suggest hook-skipping flags unless requested by user
+  
+### Enhanced
+- **Code Quality Standards** - Strengthened automated quality gates for all git operations
+- **Development Workflow** - Added clear expectations for hook compliance during development
+
+### Benefits
+- **Consistent Code Quality** - Automated linting and formatting ensure uniform code standards
+- **Test Coverage Protection** - Pre-push hooks prevent untested code from being pushed
+- **Developer Guidance** - AI assistants now understand when and how to use git hooks appropriately
+
 ## [1.10.1] - 2025-11-17
 
 ### Fixed
